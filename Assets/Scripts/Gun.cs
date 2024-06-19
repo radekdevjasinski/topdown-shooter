@@ -50,7 +50,6 @@ public class Gun : MonoBehaviour
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.velocity = direction * bulletSpeed * Time.fixedDeltaTime;
     }
-
     // Rysowanie zasiêgu wykrywania w edytorze Unity
     void OnDrawGizmosSelected()
     {

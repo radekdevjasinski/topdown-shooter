@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private float speed;
     private Rigidbody2D rigidbody2D;
     private Animator animator;
-    private Vector2 movementInput;
+    public Vector2 movementInput;
 
     void Awake()
     {
@@ -22,6 +22,10 @@ public class PlayerMovement : MonoBehaviour
         rigidbody2D.velocity = movementInput * speed * Time.fixedDeltaTime;
         animator.SetFloat("Horizontal", movementInput.x);
         animator.SetFloat("Speed", movementInput.sqrMagnitude);
+        if (movementInput.x != 0)
+        {
+            animator.SetFloat("WasFacing", movementInput.x);
+        }
     }
     private void OnMove(InputValue input)
     {
