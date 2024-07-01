@@ -14,8 +14,7 @@ public class GunBullet : MonoBehaviour
         // SprawdŸ, czy pocisk zderzy³ siê z przeciwnikiem
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Zniszcz przeciwnika
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<Enemy>().Damage(1);
 
             // Zniszcz pocisk
             Destroy(gameObject);

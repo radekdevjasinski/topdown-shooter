@@ -2,24 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Gun : MonoBehaviour, IAbility
 {
+
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float detectionRadius = 10f;
     [SerializeField] private float bulletSpeed = 500f;
 
+    private bool isActive = true;
     private bool canShoot = true;
+
+    public bool IsActive => isActive;
 
     void Update()
     {
-        // Wykryj przeciwników w pobli¿u
-        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, detectionRadius, LayerMask.GetMask("Enemy"));
-
-        // Jeœli wykryto co najmniej jednego przeciwnika i gracz mo¿e strzeliæ
-        if (enemiesInRange.Length > 0 && canShoot)
+        if (isActive)
         {
-            // Uruchom coroutine do strzelania
-            StartCoroutine(ShootCoroutine(enemiesInRange[0].transform.position));
+            // Wykryj przeciwników w pobli¿u
+            Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, detectionRadius, LayerMask.GetMask("Enemy"));
+
+            // Jeœli wykryto co najmniej jednego przeciwnika i gracz mo¿e strzeliæ
+            if (enemiesInRange.Length > 0 && canShoot)
+            {
+                // Uruchom coroutine do strzelania
+                StartCoroutine(ShootCoroutine(enemiesInRange[0].transform.position));
+            }
         }
     }
 
@@ -55,5 +62,15 @@ public class Gun : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
+    }
+
+    public void Activate(bool state)
+    {
+        isActive = true;
+    }
+
+    public void Upgrade()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -8,7 +8,7 @@ public class Slash : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<Enemy>().Damage(1);
         }
     }
     public void DestroySelf()
