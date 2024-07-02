@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Effect
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -45,6 +46,9 @@ TagManager:
     locked: 0
   - name: Floor
     uniqueID: 727967135
+    locked: 0
+  - name: Water
+    uniqueID: 2263904651
     locked: 0
   - name: Entities
     uniqueID: 4119147365

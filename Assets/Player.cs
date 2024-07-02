@@ -8,6 +8,11 @@ public class Player : MonoBehaviour
     [SerializeField] private float hp;
     [SerializeField] private float speed;
 
+    private PlayerMLAgent playerMLAgent;
+    private SpawnEnemies enemiesSpawner;
+
+
+
     public float Hp
     {
         get => hp;
@@ -30,6 +35,8 @@ public class Player : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        playerMLAgent = GetComponent<PlayerMLAgent>();
+        enemiesSpawner = GameObject.Find("EnemiesSpawner").GetComponent<SpawnEnemies>();
     }
     public void TakeDamage(float amount)
     {
@@ -41,6 +48,13 @@ public class Player : MonoBehaviour
     }
     public void Die()
     {
-        Time.timeScale = 0;
+        Player.Instance.gameObject.transform.position = Vector2.zero;
+        enemiesSpawner.ClearAllEnemies();
+        Hp = 5;
+        if (playerMLAgent.enabled)
+        {
+            playerMLAgent.ResetEpisode();
+        }
+        
     }
 }

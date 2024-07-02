@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     public Vector2 movementInput;
 
-    void Awake()
+    void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();

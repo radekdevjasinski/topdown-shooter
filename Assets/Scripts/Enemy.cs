@@ -22,7 +22,6 @@ public abstract class Enemy : MonoBehaviour
     public abstract void Damage(float amount);
     public abstract void Attack();
 
-
     protected virtual void FixedUpdate()
     {
         Move();
