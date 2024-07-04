@@ -8,10 +8,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] public float hp;
     [SerializeField] public float attack;
 
-
     protected GameObject playerRef;
     protected new Rigidbody2D rigidbody;
-
     protected virtual void Start()
     {
         playerRef = Player.Instance.gameObject;

@@ -94,10 +94,12 @@ public class PlayerMLAgent : Agent
     }
     void OnCollisionStay2D(Collision2D collision)
     {
+        //kara dla agenta kiedy bierze udzia³ w kolizji
         AddReward(Time.deltaTime * (-3));
     }
     void Update()
     {
+        //nagroda dla agenta w czasie
         AddReward(Time.deltaTime);
         
     }
