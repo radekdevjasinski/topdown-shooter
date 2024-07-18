@@ -6,16 +6,25 @@ public class Player : MonoBehaviour
 {
     //publiczna instancja singletona
     public static Player Instance { get; private set; }
-    [SerializeField] private float maxHp;
+    [Header("Health Points")]
+    [SerializeField] private float defaultHp;
+    [SerializeField] private float defaultSpeed;
+
     [SerializeField] private float hp;
     [SerializeField] private float speed;
-
+    
     private SpawnEnemies enemiesSpawner;
+
     //gettery i settery
-    public float MaxHp
+    public float DefaultSpeed
     {
-        get => maxHp;
-        set => maxHp = value;
+        get => defaultSpeed;
+        set => defaultSpeed = value;
+    }
+    public float DefaultHp
+    {
+        get => defaultHp;
+        set => defaultHp = value;
     }
     public float Hp
     {
@@ -44,18 +53,26 @@ public class Player : MonoBehaviour
 
         enemiesSpawner = GameObject.Find("EnemiesSpawner").GetComponent<SpawnEnemies>();
     }
-    public void TakeDamage(float amount)
+    public void ChangeHp(float amount)
     {
-        hp -= amount ;
+        hp += amount;
         if (hp <= 0)
         {
             Die();
         }
+        hp = Mathf.Clamp(hp, 0, defaultHp);
     }
     public void Die()
     {
         Player.Instance.gameObject.transform.position = Vector2.zero;
         enemiesSpawner.ClearAllEnemies();
-        hp = maxHp;
+        hp = defaultHp;
+    }
+    void Update()
+    {
+        if (speed != defaultSpeed)
+        {
+
+        }
     }
 }

@@ -10,7 +10,7 @@ public abstract class WeaponBase : MonoBehaviour, IWeapon
    
     public void Activate()
     {
-        if (!IsActive && cooldownTimer <= 0)
+        if (!IsActive)
         {
             //Execute();
             cooldownTimer = Cooldown;

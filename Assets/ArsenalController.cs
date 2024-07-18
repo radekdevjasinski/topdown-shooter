@@ -7,14 +7,25 @@ public class ArsenalController : MonoBehaviour
     public List<IWeapon> weapons = new();
     public GameObject gunGM;
     public GameObject swordGM;
+    public GameObject Rotatable;
+
+    private Animator playerAnimator;
     void Start()
     {
-        Gun gun = gunGM.AddComponent<Gun>();
-        gun.Initialize(true, 1, 5f, 10f, 500f);
+        playerAnimator = Player.Instance.GetComponent<Animator>();
+
+        Gun gun = gunGM.GetComponent<Gun>();
         weapons.Add(gun);
 
-        Sword sword = swordGM.AddComponent<Sword>();
-        sword.Initialize(true, 1, 5f, 100f);
+        Sword sword = swordGM.GetComponent<Sword>();
         weapons.Add(sword);
+    }
+    void Update()
+    {
+        float wasFacing = playerAnimator.GetFloat("WasFacing");
+        if (wasFacing > 0)
+            Rotatable.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+        else
+            Rotatable.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
     }
 }

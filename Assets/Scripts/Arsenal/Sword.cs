@@ -6,21 +6,21 @@ public class Sword : WeaponBase
 {
     private GameObject slashPrefab;
     private Animator playerAnimator;
-    
-    private float SlashSpeed = 100;
+    private Rigidbody2D playerRigidbody2D;
 
-    public void Initialize(bool isActive, int level, float cooldown, float slashSpeed)
+    [SerializeField] private float SwordCooldown;
+    [SerializeField] private float SlashSpeed = 100;
+
+    void Start()
     {
-        IsActive = isActive;
-        Level = level;
-        Cooldown = cooldown;
-        cooldownTimer = 0;
-        //default 100
-        SlashSpeed = slashSpeed;
+        Level = 1;
+        Cooldown = SwordCooldown;
+        Activate();
 
         slashPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Slash");
 
         playerAnimator = Player.Instance.gameObject.GetComponent<Animator>();
+        playerRigidbody2D = Player.Instance.gameObject.GetComponent<Rigidbody2D>();
     }
 
     protected override void Execute()
@@ -37,7 +37,7 @@ public class Sword : WeaponBase
             slash.transform.rotation = Quaternion.Euler(0, 180, 0);
             dir = Vector2.left;
         }
-        rb.velocity = dir * SlashSpeed * Time.fixedDeltaTime;
+        rb.velocity = dir * SlashSpeed * Time.fixedDeltaTime + playerRigidbody2D.velocity;
     }
     protected override void Update()
     {

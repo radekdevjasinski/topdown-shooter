@@ -1,28 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Gun : WeaponBase
 {
 
     private GameObject bulletPrefab;
-    private float DetectionRadius;
-    private float BulletSpeed;
+    [SerializeField] private float GunCooldown;
+    [SerializeField] private float DetectionRadius;
+    [SerializeField] private float BulletSpeed;
 
     private bool canShoot = true;
     private Vector3 targetPosition;
 
-    public void Initialize(bool isActive, int level, float cooldown, float detectionRadius, float bulletSpeed)
+    void Start()
     {
-        IsActive = isActive;
-        Level = level;
-        Cooldown = cooldown;
-        cooldownTimer = 0;
-        //10
-        DetectionRadius = detectionRadius;
-        //500
-        BulletSpeed = bulletSpeed;
-        
+        Level = 1;
+        Cooldown = GunCooldown;
+        Activate();
+
         bulletPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Bullet");
     }
 
@@ -31,10 +28,24 @@ public class Gun : WeaponBase
         // Wykryj przeciwnikÛw w pobliøu
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, DetectionRadius, LayerMask.GetMask("Enemy"));
 
-        // Jeúli wykryto co najmniej jednego przeciwnika i gracz moøe strzeliÊ
         if (enemiesInRange.Length > 0 && canShoot)
         {
-            targetPosition = enemiesInRange[0].transform.position;
+            // Znajdü najbliøszego przeciwnika
+            Collider2D nearestEnemy = enemiesInRange[0];
+            float shortestDistance = Vector2.Distance(transform.position, nearestEnemy.transform.position);
+
+            foreach (Collider2D enemy in enemiesInRange)
+            {
+                float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
+                if (distanceToEnemy < shortestDistance)
+                {
+                    nearestEnemy = enemy;
+                    shortestDistance = distanceToEnemy;
+                }
+            }
+
+            targetPosition = nearestEnemy.transform.position;
+            Execute();
             // Uruchom coroutine do strzelania
             StartCoroutine(ShootCoroutine());
         }
@@ -44,9 +55,6 @@ public class Gun : WeaponBase
     {
         // Ustaw flagÍ na false, aby zapobiec kolejnemu strza≥owi
         canShoot = false;
-
-        // Wystrzel pocisk w kierunku przeciwnika
-        Execute();
 
         // Poczekaj 5 sekund
         yield return new WaitForSeconds(5f);
