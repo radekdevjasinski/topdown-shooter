@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Effect
   - Water
+  - Object
+  - Barrel
   layers:
   - Default
   - TransparentFX
@@ -17,9 +19,9 @@ TagManager:
   - Enemy
   - Effect
   - Player
-  - 
-  - 
-  - 
+  - Object
+  - Barrel
+  - FlyingEnemy
   - 
   - 
   - 
@@ -50,9 +52,15 @@ TagManager:
   - name: Water
     uniqueID: 2263904651
     locked: 0
+  - name: Objects
+    uniqueID: 1720917265
+    locked: 0
   - name: Entities
     uniqueID: 4119147365
     locked: 0
   - name: Effects
     uniqueID: 217669611
+    locked: 0
+  - name: UI
+    uniqueID: 134178471
     locked: 0

@@ -31,6 +31,7 @@ public class Orange : WeaponBase
         yield return new WaitForSeconds(OrangeEatingTime);
         animator.SetTrigger("End");
         Player.Instance.ChangeHp(heal);
+        Player.Instance.Speed += speed;
         
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpawnEnemies : MonoBehaviour
 {
     [SerializeField]
-    private GameObject enemyPrefab;
+    private GameObject[] enemyPrefab;
     [SerializeField]
     private float spawnDistance = 10f;
     [SerializeField]
@@ -45,7 +45,17 @@ public class SpawnEnemies : MonoBehaviour
                 0);
 
             // Stwórz przeciwnika na wybranej pozycji
-            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
+            float chance = Random.Range(0, 100);
+            if (chance <=90)
+            {
+                Instantiate(enemyPrefab[0], spawnPosition, Quaternion.identity, transform);
+
+            }
+            else
+            {
+                Instantiate(enemyPrefab[1], spawnPosition, Quaternion.identity, transform);
+
+            }
         }
         
         StartCoroutine(SpawnAfterCooldown());

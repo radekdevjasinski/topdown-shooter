@@ -11,6 +11,9 @@ public class EnemyBat : Enemy
     protected override void Start()
     {
         base.Start();
+
+        hp = 2;
+        slider.maxValue = hp;
         movementStrategy = gameObject.AddComponent<FlyTowardsStrategy>();
         damageStrategy = gameObject.AddComponent<SimpleDamageStrategy>();
         attackStrategy = gameObject.AddComponent<SimpleAttackStrategy>(); 
@@ -21,6 +24,7 @@ public class EnemyBat : Enemy
     }
     public override void Damage(float amount)
     {
+        base.Damage(amount);
         damageStrategy.Damage(this, amount);
     }
     public override void Attack()
@@ -31,6 +35,7 @@ public class EnemyBat : Enemy
     {
         base.FixedUpdate();
         Attack();
+        UpdateSlider();
     }
 
 }

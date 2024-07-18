@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Gun : WeaponBase
@@ -10,6 +9,7 @@ public class Gun : WeaponBase
     [SerializeField] private float GunCooldown;
     [SerializeField] private float DetectionRadius;
     [SerializeField] private float BulletSpeed;
+    public float GunDamage;
 
     private bool canShoot = true;
     private Vector3 targetPosition;
@@ -25,12 +25,15 @@ public class Gun : WeaponBase
 
     protected override void Update()
     {
-        // Wykryj przeciwników w pobli¿u
-        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, DetectionRadius, LayerMask.GetMask("Enemy"));
+        LayerMask enemyLayer = LayerMask.GetMask("Enemy");
+        LayerMask flyingEnemy = LayerMask.GetMask("FlyingEnemy");
+        LayerMask barrel = LayerMask.GetMask("Barrel");
+
+        LayerMask enemies = enemyLayer | flyingEnemy | barrel;
+        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, DetectionRadius, enemies);
 
         if (enemiesInRange.Length > 0 && canShoot)
         {
-            // ZnajdŸ najbli¿szego przeciwnika
             Collider2D nearestEnemy = enemiesInRange[0];
             float shortestDistance = Vector2.Distance(transform.position, nearestEnemy.transform.position);
 
@@ -46,32 +49,25 @@ public class Gun : WeaponBase
 
             targetPosition = nearestEnemy.transform.position;
             Execute();
-            // Uruchom coroutine do strzelania
             StartCoroutine(ShootCoroutine());
         }
     }
 
     IEnumerator ShootCoroutine()
     {
-        // Ustaw flagê na false, aby zapobiec kolejnemu strza³owi
         canShoot = false;
 
-        // Poczekaj 5 sekund
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(GunCooldown);
 
-        // Ustaw flagê na true, aby gracz móg³ ponownie strzelaæ
         canShoot = true;
     }
 
     protected override void Execute()
     {
-        // Oblicz kierunek do przeciwnika
         Vector3 direction = (targetPosition - transform.position).normalized;
 
-        // Stwórz pocisk i ustaw jego pozycjê oraz rotacjê
         GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
 
-        // Ustaw prêdkoœæ pocisku
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.velocity = direction * BulletSpeed * Time.fixedDeltaTime;
     }

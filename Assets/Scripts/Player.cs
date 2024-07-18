@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -8,24 +9,16 @@ public class Player : MonoBehaviour
     public static Player Instance { get; private set; }
     [Header("Health Points")]
     [SerializeField] private float defaultHp;
-    [SerializeField] private float defaultSpeed;
-
     [SerializeField] private float hp;
+
+    [Header("Speed")]
+    [SerializeField] private float defaultSpeed;
     [SerializeField] private float speed;
+    [SerializeField] private float speedChangeRate = 0.1f;
     
     private SpawnEnemies enemiesSpawner;
 
     //gettery i settery
-    public float DefaultSpeed
-    {
-        get => defaultSpeed;
-        set => defaultSpeed = value;
-    }
-    public float DefaultHp
-    {
-        get => defaultHp;
-        set => defaultHp = value;
-    }
     public float Hp
     {
         get => hp;
@@ -64,15 +57,21 @@ public class Player : MonoBehaviour
     }
     public void Die()
     {
-        Player.Instance.gameObject.transform.position = Vector2.zero;
-        enemiesSpawner.ClearAllEnemies();
-        hp = defaultHp;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
     }
     void Update()
     {
         if (speed != defaultSpeed)
         {
+            float difference = defaultSpeed - speed;
+            speed += difference * speedChangeRate * Time.deltaTime;
 
+            if (Mathf.Abs(difference) < 0.1f)
+            {
+                speed = defaultSpeed;
+            }
         }
     }
+
 }

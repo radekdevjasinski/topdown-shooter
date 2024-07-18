@@ -10,6 +10,7 @@ public class Sword : WeaponBase
 
     [SerializeField] private float SwordCooldown;
     [SerializeField] private float SlashSpeed = 100;
+    public float SwordDamage;
 
     void Start()
     {
@@ -37,7 +38,7 @@ public class Sword : WeaponBase
             slash.transform.rotation = Quaternion.Euler(0, 180, 0);
             dir = Vector2.left;
         }
-        rb.velocity = dir * SlashSpeed * Time.fixedDeltaTime + playerRigidbody2D.velocity;
+        rb.velocity = dir * SlashSpeed * Time.fixedDeltaTime + new Vector2(playerRigidbody2D.velocity.x, 0);
     }
     protected override void Update()
     {
