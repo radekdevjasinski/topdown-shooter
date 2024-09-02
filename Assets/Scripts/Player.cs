@@ -30,6 +30,10 @@ public class Player : MonoBehaviour
         get => speed;
         set => speed = value;
     }
+    public float DefaultHp
+    {
+        get => defaultHp;
+    }
 
     void Awake()
     {

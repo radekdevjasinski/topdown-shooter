@@ -8,6 +8,7 @@ public class BarrelObject : MonoBehaviour
     public float duration;
     private Barrel barrel;
     private GameObject explosionPrefab;
+    private GameObject gunPowderLine;
     private Slider slider;
     private bool alreadyBoomed;
     void Start()
@@ -15,12 +16,29 @@ public class BarrelObject : MonoBehaviour
 
         barrel = GameObject.Find("Barrel").GetComponent<Barrel>();
         explosionPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Barrel Explosion");
+        gunPowderLine = Resources.Load<GameObject>("Prefabs/Weapons/Gunpowder Line");
         duration = barrel.barrelDuration;
         slider = GetComponentInChildren<Slider>();
         slider.minValue = 0;
         slider.maxValue = barrel.barrelDuration;
         alreadyBoomed = false;
 
+        LinkGunpowder();
+
+    }
+    void LinkGunpowder()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, barrel.explosionRadius);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("Barrel"))
+            {
+                GameObject gunLine = Instantiate(gunPowderLine, gameObject.transform.position, Quaternion.identity, gameObject.transform);
+                LineRenderer lineRenderer = gunLine.GetComponent<LineRenderer>();
+                lineRenderer.SetPosition(0, this.transform.position);
+                lineRenderer.SetPosition(1, collider.gameObject.transform.position);
+            }
+        }
     }
     public void Boom()
     {
@@ -49,6 +67,11 @@ public class BarrelObject : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         GetComponentInChildren<Canvas>().enabled = false;
         GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        LineRenderer[] lineRenderers = gameObject.GetComponentsInChildren<LineRenderer>();
+        foreach (LineRenderer lineRenderer in lineRenderers)
+        {
+            lineRenderer.enabled = false;
+        }
         explosion.GetComponent<ParticleSystem>().Play();
         StartCoroutine(Destroy(explosion.GetComponent<ParticleSystem>().duration));
         
