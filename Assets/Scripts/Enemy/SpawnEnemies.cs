@@ -45,20 +45,34 @@ public class SpawnEnemies : MonoBehaviour
                 0);
 
             // Stwórz przeciwnika na wybranej pozycji
-            float chance = Random.Range(0, 100);
-            if (chance <=90)
-            {
-                Instantiate(enemyPrefab[0], spawnPosition, Quaternion.identity, transform);
-
-            }
-            else
-            {
-                Instantiate(enemyPrefab[1], spawnPosition, Quaternion.identity, transform);
-
-            }
+            SpawnRandomEnemy(spawnPosition);
         }
         
         StartCoroutine(SpawnAfterCooldown());
+    }
+    void SpawnRandomEnemy(Vector3 spawnPosition)
+    {
+        // Zsumuj wszystkie wagi
+        int totalWeight = 0;
+        for (int i = 0; i < enemyPrefab.Length; i++)
+        {
+            totalWeight += enemyPrefab[i].GetComponent<Enemy>().spawnWeight;
+        }
+
+        // Wybierz losow¹ liczbê z zakresu od 0 do totalWeight
+        int randomValue = Random.Range(0, totalWeight);
+
+        // Przeszukaj listê, aby znaleŸæ odpowiadaj¹cy obiekt
+        int cumulativeWeight = 0;
+        for (int i = 0; i < enemyPrefab.Length; i++)
+        {
+            cumulativeWeight += enemyPrefab[i].GetComponent<Enemy>().spawnWeight;
+            if (randomValue < cumulativeWeight)
+            {
+                Instantiate(enemyPrefab[i], spawnPosition, Quaternion.identity, transform);
+                break;
+            }
+        }
     }
     IEnumerator SpawnAfterCooldown()
     {

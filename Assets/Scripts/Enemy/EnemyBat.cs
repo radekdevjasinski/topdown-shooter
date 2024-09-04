@@ -11,8 +11,6 @@ public class EnemyBat : Enemy
     protected override void Start()
     {
         base.Start();
-
-        hp = 2;
         slider.maxValue = hp;
         movementStrategy = gameObject.AddComponent<FlyTowardsStrategy>();
         damageStrategy = gameObject.AddComponent<SimpleDamageStrategy>();

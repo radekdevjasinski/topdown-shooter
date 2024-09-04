@@ -11,8 +11,6 @@ public class EnemySkeleton : Enemy
     protected override void Start()
     {
         base.Start();
-
-        hp = 5;
         slider.maxValue = hp;
         movementStrategy = gameObject.AddComponent<WalkTowardsStrategy>();
         damageStrategy = gameObject.AddComponent<SimpleDamageStrategy>();

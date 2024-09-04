@@ -50,13 +50,19 @@ public class Gun : WeaponBase
             targetPosition = nearestEnemy.transform.position;
             Execute();
             StartCoroutine(ShootCoroutine());
+            
+        }
+        if (canShoot == false)
+        {
+            if (cooldownTimer < Cooldown) cooldownTimer += Time.deltaTime;
+            if (cooldownTimer > Cooldown) cooldownTimer = Cooldown;
         }
     }
 
     IEnumerator ShootCoroutine()
     {
         canShoot = false;
-
+        cooldownTimer = 0;
         yield return new WaitForSeconds(GunCooldown);
 
         canShoot = true;

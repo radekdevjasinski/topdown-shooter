@@ -6,7 +6,7 @@ public abstract class WeaponBase : MonoBehaviour, IWeapon
     public bool IsActive { get; set; }  
     public int Level { get; set; }
     public float Cooldown { get; set; }
-    protected float cooldownTimer;
+    public float cooldownTimer;
 
    //metoda aktywuj¹ca umiejêtnoœæ
     public void Activate()

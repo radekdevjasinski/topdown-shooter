@@ -8,6 +8,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] public float speed;
     [SerializeField] public float hp;
     [SerializeField] public float attack;
+    [SerializeField] public int spawnWeight;
 
     private float flashDuriaton = 0.2f;
 
