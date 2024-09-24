@@ -7,6 +7,8 @@ public class SpawnEnemies : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] enemyPrefab;
+    private List<GameObject> enemies;
+
     [SerializeField]
     private float spawnDistance = 10f;
     [SerializeField]
@@ -18,8 +20,22 @@ public class SpawnEnemies : MonoBehaviour
 
     void Start()
     {
+        enemies = new List<GameObject>(enemyPrefab);
+        enemies.Sort((a, b) =>
+        {
+            float threatA = a.GetComponent<Enemy>().threatCost;
+            float threatB = b.GetComponent<Enemy>().threatCost;
+
+            return threatB.CompareTo(threatA);
+        });
+        foreach (GameObject enemy in enemies)
+        {
+            Debug.Log(enemy.name);
+        }
+        
         mainCamera = Camera.main;
         SpawnEnemyOnCircle();
+
     }
 
     void SpawnEnemyOnCircle()
@@ -45,33 +61,46 @@ public class SpawnEnemies : MonoBehaviour
                 0);
 
             // Stwórz przeciwnika na wybranej pozycji
-            SpawnRandomEnemy(spawnPosition);
+            SpawnEnemy(spawnPosition, ChooseEnemy());
         }
         
         StartCoroutine(SpawnAfterCooldown());
     }
-    void SpawnRandomEnemy(Vector3 spawnPosition)
+    GameObject ChooseEnemy()
     {
-        // Zsumuj wszystkie wagi
-        int totalWeight = 0;
-        for (int i = 0; i < enemyPrefab.Length; i++)
+        List<GameObject> eligibleEnemies = new List<GameObject>();
+        float highestThreatCost = 0;
+        foreach (GameObject enemy in enemies)
         {
-            totalWeight += enemyPrefab[i].GetComponent<Enemy>().spawnWeight;
+            if (GameController.instance.ThreatCheck(enemy.GetComponent<Enemy>().threatCost))
+            {
+                if (enemy.GetComponent<Enemy>().threatCost >= highestThreatCost)
+                {
+                    eligibleEnemies.Add(enemy);
+                    highestThreatCost = enemy.GetComponent<Enemy>().threatCost;
+                }
+            }
         }
 
-        // Wybierz losow¹ liczbê z zakresu od 0 do totalWeight
-        int randomValue = Random.Range(0, totalWeight);
-
-        // Przeszukaj listê, aby znaleŸæ odpowiadaj¹cy obiekt
-        int cumulativeWeight = 0;
-        for (int i = 0; i < enemyPrefab.Length; i++)
+        if (eligibleEnemies.Count == 1)
         {
-            cumulativeWeight += enemyPrefab[i].GetComponent<Enemy>().spawnWeight;
-            if (randomValue < cumulativeWeight)
-            {
-                Instantiate(enemyPrefab[i], spawnPosition, Quaternion.identity, transform);
-                break;
-            }
+            return eligibleEnemies[0];
+        }
+
+        else if (eligibleEnemies.Count > 1)
+        {
+            int randomIndex = Random.Range(0, eligibleEnemies.Count);
+            return eligibleEnemies[randomIndex];
+        }
+
+        return null;
+    }
+    void SpawnEnemy(Vector3 spawnPosition, GameObject enemyPrefab)
+    {
+        if (enemyPrefab != null)
+        {
+            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
+            GameController.instance.Threat -= enemyPrefab.GetComponent<Enemy>().threatCost;
         }
     }
     IEnumerator SpawnAfterCooldown()

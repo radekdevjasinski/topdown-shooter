@@ -5,10 +5,16 @@ using UnityEngine.UI;
 
 public abstract class Enemy : MonoBehaviour
 {
+    [Header("Stats")]
     [SerializeField] public float speed;
     [SerializeField] public float hp;
     [SerializeField] public float attack;
+
+    [Header("Spawning")]
     [SerializeField] public int spawnWeight;
+    [SerializeField] public float difficultyThreshold;
+    [SerializeField] public float threatCost;
+
 
     private float flashDuriaton = 0.2f;
 
