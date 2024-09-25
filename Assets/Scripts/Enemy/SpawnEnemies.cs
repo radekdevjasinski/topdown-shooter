@@ -72,7 +72,7 @@ public class SpawnEnemies : MonoBehaviour
         float highestThreatCost = 0;
         foreach (GameObject enemy in enemies)
         {
-            if (GameController.instance.ThreatCheck(enemy.GetComponent<Enemy>().threatCost))
+            if (GameController.Instance.ThreatCheck(enemy.GetComponent<Enemy>().threatCost))
             {
                 if (enemy.GetComponent<Enemy>().threatCost >= highestThreatCost)
                 {
@@ -100,7 +100,7 @@ public class SpawnEnemies : MonoBehaviour
         if (enemyPrefab != null)
         {
             Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
-            GameController.instance.Threat -= enemyPrefab.GetComponent<Enemy>().threatCost;
+            GameController.Instance.Threat -= enemyPrefab.GetComponent<Enemy>().threatCost;
         }
     }
     IEnumerator SpawnAfterCooldown()

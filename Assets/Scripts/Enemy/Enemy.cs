@@ -10,9 +10,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] public float hp;
     [SerializeField] public float attack;
 
-    [Header("Spawning")]
-    [SerializeField] public int spawnWeight;
-    [SerializeField] public float difficultyThreshold;
+    [Header("Threat")]
     [SerializeField] public float threatCost;
 
 
