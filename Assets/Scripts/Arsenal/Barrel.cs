@@ -37,4 +37,15 @@ public class Barrel : WeaponBase
         GameObject barrel = Instantiate(barrelPrefab, spawnPosition, Quaternion.identity);
         Destroy(barrel, barrelDuration);
     }
+    public override void UpgradeToNextLevel(WeaponLevel weaponLevel)
+    {
+        if (weaponLevel.level != (Level + 1))
+        {
+            Debug.LogError("Wrong level");
+            return;
+        }
+        Cooldown += weaponLevel.cooldownChange;
+        barrelDamage += weaponLevel.damageChange;
+        Level = weaponLevel.level;
+    }
 }

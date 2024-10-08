@@ -13,11 +13,13 @@ public class Gun : WeaponBase
 
     private bool canShoot = true;
     private Vector3 targetPosition;
-
-    void Start()
+    private void Awake()
     {
         Level = 1;
         Cooldown = GunCooldown;
+    }
+    void Start()
+    {
         Activate();
 
         bulletPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Bullet");
@@ -63,7 +65,7 @@ public class Gun : WeaponBase
     {
         canShoot = false;
         cooldownTimer = 0;
-        yield return new WaitForSeconds(GunCooldown);
+        yield return new WaitForSeconds(Cooldown);
 
         canShoot = true;
     }
@@ -82,5 +84,16 @@ public class Gun : WeaponBase
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, DetectionRadius);
+    }
+    public override void UpgradeToNextLevel(WeaponLevel weaponLevel)
+    {
+        if (weaponLevel.level != (Level + 1))
+        {
+            Debug.LogError("Wrong level");
+            return;
+        }
+        Cooldown += weaponLevel.cooldownChange;
+        GunDamage += weaponLevel.damageChange;
+        Level = weaponLevel.level;
     }
 }

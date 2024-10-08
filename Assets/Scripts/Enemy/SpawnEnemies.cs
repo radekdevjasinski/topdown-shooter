@@ -28,10 +28,6 @@ public class SpawnEnemies : MonoBehaviour
 
             return threatB.CompareTo(threatA);
         });
-        foreach (GameObject enemy in enemies)
-        {
-            Debug.Log(enemy.name);
-        }
         
         mainCamera = Camera.main;
         SpawnEnemyOnCircle();

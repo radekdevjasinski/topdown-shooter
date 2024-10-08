@@ -12,10 +12,14 @@ public class Sword : WeaponBase
     [SerializeField] private float SlashSpeed = 100;
     public float SwordDamage;
 
-    void Start()
+    void Awake()
     {
         Level = 1;
         Cooldown = SwordCooldown;
+        
+    }
+    void Start()
+    {
         Activate();
 
         slashPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Slash");
@@ -43,5 +47,16 @@ public class Sword : WeaponBase
     protected override void Update()
     {
         base.Update();
+    }
+    public override void UpgradeToNextLevel(WeaponLevel weaponLevel)
+    {
+        if (weaponLevel.level != (Level + 1))
+        {
+            Debug.LogError("Wrong level");
+            return;
+        }
+        Cooldown += weaponLevel.cooldownChange;
+        SwordDamage += weaponLevel.damageChange;
+        Level = weaponLevel.level;
     }
 }

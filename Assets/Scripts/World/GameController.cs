@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
 
     private float threatSpikeTimer = 0;
     private static float spikeChangeTime = 5;
-
+    private UIController uIController;
 
     public static GameController Instance;
     public float Threat
@@ -50,6 +50,7 @@ public class GameController : MonoBehaviour
         level = 1;
         experience = 0;
         expToNextLevel = LevelingFunction();
+        uIController = GetComponent<UIController>();
     }
     void Update()
     {
@@ -84,10 +85,11 @@ public class GameController : MonoBehaviour
         level++;
         expToNextLevel = LevelingFunction();
         ExpSlider.Instance.UpdateExpSlider();
+        uIController.ShowLevelUp();
 
     }
     float LevelingFunction()
     {
-        return Mathf.Pow(2, level);
+        return 2 + (level * level);
     }
 }
