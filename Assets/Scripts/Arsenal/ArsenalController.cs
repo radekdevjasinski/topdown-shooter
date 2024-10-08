@@ -7,7 +7,6 @@ using UnityEngine;
 public class ArsenalController : MonoBehaviour
 {
     public List<WeaponBase> weapons = new();
-    public List<WeaponLevel> choosenUpgrades = new();
     public GameObject gunGM;
     public GameObject swordGM;
     public GameObject Rotatable;
@@ -42,7 +41,7 @@ public class ArsenalController : MonoBehaviour
     }
     public List<WeaponLevel> PossibleUpgrades()
     {
-        choosenUpgrades = new List<WeaponLevel>();
+        List<WeaponLevel> choosenUpgrades = new List<WeaponLevel>();
         foreach (WeaponBase weapon in weapons)
         {
             if (weapon.getNextUpgrade() != null)

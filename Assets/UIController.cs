@@ -5,6 +5,7 @@ using UnityEngine;
 public class UIController : MonoBehaviour
 {
     public GameObject levelUpPanel;
+    public GameObject displayPanel;
     public bool levelUpPanelOn;
     public void ShowLevelUp()
     {
@@ -18,5 +19,6 @@ public class UIController : MonoBehaviour
         levelUpPanel.SetActive(false);
         Time.timeScale = 1;
         levelUpPanelOn = false;
+        displayPanel.GetComponent<ShowActiveWeaponsUI>().UpdateActiveWeaponsUI();
     }
 }

@@ -18,6 +18,11 @@ public class SpawnEnemies : MonoBehaviour
 
     private Camera mainCamera;
 
+    [SerializeField]
+    private float removeDistance = 20f;
+    [SerializeField]
+    private float removeCheckInterval = 5f;
+
     void Start()
     {
         enemies = new List<GameObject>(enemyPrefab);
@@ -30,7 +35,8 @@ public class SpawnEnemies : MonoBehaviour
         });
         
         mainCamera = Camera.main;
-        SpawnEnemyOnCircle();
+        StartCoroutine(SpawnEnemiesPeriodically());
+        StartCoroutine(RemoveDistantEnemiesPeriodically());
 
     }
 
@@ -59,8 +65,6 @@ public class SpawnEnemies : MonoBehaviour
             // Stwórz przeciwnika na wybranej pozycji
             SpawnEnemy(spawnPosition, ChooseEnemy());
         }
-        
-        StartCoroutine(SpawnAfterCooldown());
     }
     GameObject ChooseEnemy()
     {
@@ -91,6 +95,7 @@ public class SpawnEnemies : MonoBehaviour
 
         return null;
     }
+
     void SpawnEnemy(Vector3 spawnPosition, GameObject enemyPrefab)
     {
         if (enemyPrefab != null)
@@ -99,10 +104,13 @@ public class SpawnEnemies : MonoBehaviour
             GameController.Instance.Threat -= enemyPrefab.GetComponent<Enemy>().threatCost;
         }
     }
-    IEnumerator SpawnAfterCooldown()
+    IEnumerator SpawnEnemiesPeriodically()
     {
-        yield return new WaitForSeconds(spawnCooldown);
-        SpawnEnemyOnCircle();
+        while (true)
+        {
+            SpawnEnemyOnCircle();
+            yield return new WaitForSeconds(spawnCooldown);
+        }
     }
     public GameObject getClosestEnemy()
     {
@@ -140,6 +148,33 @@ public class SpawnEnemies : MonoBehaviour
         foreach (GameObject enemy in children)
         {
             Destroy(enemy);
+        }
+    }
+    IEnumerator RemoveDistantEnemiesPeriodically()
+    {
+        while (true)
+        {
+            RemoveDistantEnemies();
+            yield return new WaitForSeconds(removeCheckInterval); // Check every 'removeCheckInterval' seconds
+        }
+    }
+
+    void RemoveDistantEnemies()
+    {
+        List<GameObject> children = new List<GameObject>();
+
+        foreach (Transform child in this.transform)
+        {
+            children.Add(child.gameObject);
+        }
+
+        foreach (GameObject enemy in children)
+        {
+            float distance = Vector3.Distance(Player.Instance.gameObject.transform.position, enemy.transform.position);
+            if (distance > removeDistance)
+            {
+                Destroy(enemy);
+            }
         }
     }
 }

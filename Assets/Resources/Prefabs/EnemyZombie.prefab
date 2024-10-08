@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: -175819931
   m_SortingLayer: 4
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 8cd24763bb131a740921be774cd47c02, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 11b217cfe3a2b764fbfe15c579ecfd99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -298,7 +298,7 @@ GameObject:
   - component: {fileID: 1033839676928341648}
   - component: {fileID: 4754987094814145482}
   m_Layer: 6
-  m_Name: EnemySkeleton
+  m_Name: EnemyZombie
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -333,10 +333,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fadee2d1c4ba56f4e8ed5056555457c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
-  hp: 10
-  attack: 2
-  threatCost: 2
+  speed: 50
+  hp: 15
+  attack: 5
+  threatCost: 4
 --- !u!50 &1155009148464518095
 Rigidbody2D:
   serializedVersion: 4

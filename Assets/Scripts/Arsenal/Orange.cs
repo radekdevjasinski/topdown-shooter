@@ -12,16 +12,10 @@ public class Orange : WeaponBase
 
     private GameObject orangePrefab;
 
-    void Awake()
-    {
-        Level = 1;
-        Cooldown = OrangeCooldown;
-        
-    }
     void Start()
     {
-        Activate();
-
+        Level = 0;
+        Cooldown = OrangeCooldown;
         orangePrefab = Resources.Load<GameObject>("Prefabs/Weapons/Orange");
     }
     protected override void Execute()
@@ -40,11 +34,7 @@ public class Orange : WeaponBase
     }
     public override void UpgradeToNextLevel(WeaponLevel weaponLevel)
     {
-        if (weaponLevel.level != (Level + 1))
-        {
-            Debug.LogError("Wrong level");
-            return;
-        }
+        base.UpgradeToNextLevel(weaponLevel);
         Cooldown += weaponLevel.cooldownChange;
         heal += weaponLevel.damageChange;
         Level = weaponLevel.level;

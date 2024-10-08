@@ -50,11 +50,7 @@ public class Sword : WeaponBase
     }
     public override void UpgradeToNextLevel(WeaponLevel weaponLevel)
     {
-        if (weaponLevel.level != (Level + 1))
-        {
-            Debug.LogError("Wrong level");
-            return;
-        }
+        base.UpgradeToNextLevel(weaponLevel);
         Cooldown += weaponLevel.cooldownChange;
         SwordDamage += weaponLevel.damageChange;
         Level = weaponLevel.level;

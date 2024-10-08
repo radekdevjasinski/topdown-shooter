@@ -14,10 +14,8 @@ public class Barrel : WeaponBase
 
     void Start()
     {
-        Level = 1;
+        Level = 0;
         Cooldown = barrelCooldown;
-        Activate();
-
         barrelPrefab = Resources.Load<GameObject>("Prefabs/Weapons/BarrelObject");
     }
 
@@ -39,11 +37,7 @@ public class Barrel : WeaponBase
     }
     public override void UpgradeToNextLevel(WeaponLevel weaponLevel)
     {
-        if (weaponLevel.level != (Level + 1))
-        {
-            Debug.LogError("Wrong level");
-            return;
-        }
+        base.UpgradeToNextLevel(weaponLevel);
         Cooldown += weaponLevel.cooldownChange;
         barrelDamage += weaponLevel.damageChange;
         Level = weaponLevel.level;

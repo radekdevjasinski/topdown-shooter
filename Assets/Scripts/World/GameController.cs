@@ -90,6 +90,6 @@ public class GameController : MonoBehaviour
     }
     float LevelingFunction()
     {
-        return 2 + (level * level);
+        return 5  * level;
     }
 }

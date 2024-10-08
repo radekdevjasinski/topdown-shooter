@@ -336,9 +336,7 @@ MonoBehaviour:
   speed: 30
   hp: 1
   attack: 1
-  spawnWeight: 80
-  difficultyThreshold: 0
-  threatCost: 0.2
+  threatCost: 0.5
 --- !u!50 &1155009148464518095
 Rigidbody2D:
   serializedVersion: 4
