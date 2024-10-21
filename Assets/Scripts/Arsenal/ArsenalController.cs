@@ -59,4 +59,11 @@ public class ArsenalController : MonoBehaviour
     {
         weapons[id].UpgradeToNextLevel(weaponLevel);
     }
+    public void ResetArsenal()
+    {
+        foreach (WeaponBase weapon in weapons)
+        {
+            weapon.ResetToDefaultLevel();
+        }
+    }
 }

@@ -6,6 +6,7 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.Tilemaps;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class PlayerMLAgent : Agent
 {
@@ -13,64 +14,61 @@ public class PlayerMLAgent : Agent
     private new Rigidbody2D rigidbody;
     private Animator animator;
     private Vector2 movement;
+    public Vector2 movementInput;
 
-    [SerializeField] private TilemapCollider2D wallCollider;
+    [SerializeField] private UIController uIController;
     [SerializeField] private SpawnEnemies enemySpawner;
+    [SerializeField] private LevelUpScreen levelUpSceen;
+    [SerializeField] private ArsenalController arsenalController;
+    public static PlayerMLAgent instance;
 
     [Header("UI")]
-    public Transform textsTransform;
     public TMP_Text[] texts;
     public int iter = 0;
+    void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        rigidbody = Player.Instance.GetComponent<Rigidbody2D>();
+        animator = Player.Instance.GetComponent<Animator>();
         speed = Player.Instance.Speed;
         //gracz zwrócony w lewo
         animator.SetFloat("WasFacing", -1);
-        texts = textsTransform.GetComponentsInChildren<TMP_Text>();
+        Player.Instance.GetComponent<PlayerMovement>().enabled = false;
+        Player.Instance.GetComponent<PlayerInput>().enabled = false;
+
     }
     public override void OnEpisodeBegin()
     {
+        GameController.Instance.ResetGame();
+
         Debug.Log("Episode started");
         iter++;
-        texts[0].text = "Iteracja: " + iter;
-        
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        Vector2 playerPos = transform.position;
+        // Pozycja gracza
+        Vector2 playerPos = Player.Instance.transform.position;
         sensor.AddObservation(playerPos);
-        texts[1].text = "Nagroda: " + GetCumulativeReward(); ;
-        texts[2].text = "Pozycja: " + playerPos;
 
-        GameObject closestEnemy = enemySpawner.getClosestEnemy();
-        if (closestEnemy != null)
-        {
-            Vector2 closestEnemyPos = closestEnemy.transform.position;
-            sensor.AddObservation(closestEnemyPos);
-            texts[3].text = "Najb. przeciwnik: " + closestEnemyPos;
-        }
-        else
-        {
-            // Jeœli nie ma wrogów, dodaj dalek¹ odleg³oœæ
-            sensor.AddObservation(new Vector2(100,100));
-            texts[3].text = "Najb. przeciwnik: " + new Vector2(100, 100);
-        }
-        // Oblicz odleg³oœæ miêdzy graczem a najbli¿sz¹ œcian¹
-        if (wallCollider != null)
-        {
-            Vector2 closestPointOnWall = wallCollider.ClosestPoint(playerPos);
-            sensor.AddObservation(closestPointOnWall);
-            texts[4].text = "Najb. œciana: " + closestPointOnWall;
-        }
-        else
-        {
-            // Jeœli nie ma kolidera œciany, dodaj dalek¹ odleg³oœæ
-            sensor.AddObservation(new Vector2(100, 100));
-            texts[4].text = "Najb. œciana: " + new Vector2(100, 100);
-        }
+        texts[0].text = "iteration " + iter;
+        texts[1].text = "reward " + GetCumulativeReward().ToString("F2");
 
+    }
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        continuousActions[0] = movementInput.x;
+        continuousActions[1] = movementInput.y;
 
     }
     public override void OnActionReceived(ActionBuffers actions)
@@ -79,8 +77,7 @@ public class PlayerMLAgent : Agent
         float moveY = actions.ContinuousActions[1];
 
         movement = new Vector2(moveX, moveY);
-        texts[5].text = "RuchX: " + moveX;
-        texts[6].text = "RuchY: " + moveY;
+        texts[2].text = "move " + moveX.ToString("F2") + ", " + moveY.ToString("F2");
     }
     void FixedUpdate()
     {
@@ -92,21 +89,36 @@ public class PlayerMLAgent : Agent
             animator.SetFloat("WasFacing", movement.x);
         }
     }
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        //kara dla agenta kiedy bierze udzia³ w kolizji
-        AddReward(Time.deltaTime * (-3));
-    }
     void Update()
     {
         //nagroda dla agenta w czasie
-        AddReward(Time.deltaTime);
-        
+        //AddReward(Time.deltaTime);
+
+        //wybierz losowe ulepszenia
+        RandomUpgrades();
+
+    }
+    private void OnMove(InputValue input)
+    {
+        movementInput = input.Get<Vector2>();
     }
     public void ResetEpisode()
     {
-        SetReward(-1f);
-        EndEpisode();
+        //SetReward(-1f);
         Debug.Log("Episode ended");
+        EndEpisode();
+    }
+    void RandomUpgrades()
+    {
+        if (uIController.levelUpPanelOn)
+        {
+            WeaponLevel selectedUpgrade = levelUpSceen.activeCards[Random.Range(0, levelUpSceen.activeCards.Length)];
+            if (selectedUpgrade != null)
+            {
+                Debug.Log("Wybrana bron: " + selectedUpgrade.weaponId + " " + selectedUpgrade.name);
+                arsenalController.UpgradeWeaponWithId(selectedUpgrade.weaponId, selectedUpgrade);
+            }
+            uIController.HideLevelUp();
+        }
     }
 }

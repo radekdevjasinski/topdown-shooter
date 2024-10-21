@@ -12,20 +12,19 @@ public class Sword : WeaponBase
     [SerializeField] private float SlashSpeed = 100;
     public float SwordDamage;
 
-    void Awake()
-    {
-        Level = 1;
-        Cooldown = SwordCooldown;
-        
-    }
-    void Start()
-    {
-        Activate();
+    private float defaultDamage;
+    
 
+    protected override void Start()
+    {
+        Cooldown = SwordCooldown;
+        defaultDamage = SwordDamage;
         slashPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Slash");
 
         playerAnimator = Player.Instance.gameObject.GetComponent<Animator>();
         playerRigidbody2D = Player.Instance.gameObject.GetComponent<Rigidbody2D>();
+        
+        base.Start();
     }
 
     protected override void Execute()
@@ -54,5 +53,11 @@ public class Sword : WeaponBase
         Cooldown += weaponLevel.cooldownChange;
         SwordDamage += weaponLevel.damageChange;
         Level = weaponLevel.level;
+    }
+    public override void ResetToDefaultLevel()
+    {
+        Cooldown = SwordCooldown;
+        SwordDamage = defaultDamage;
+        base.ResetToDefaultLevel();
     }
 }

@@ -12,6 +12,10 @@ public class SimpleDamageStrategy : MonoBehaviour, IDamageStrategy
             Destroy(enemy.gameObject);
             KillCounter.Instance.AddKill();
             GameController.Instance.AddExp(enemy.threatCost);
+            if (PlayerMLAgent.instance != null)
+            {
+                PlayerMLAgent.instance.AddReward(enemy.threatCost);
+            }
         }
     }
 }

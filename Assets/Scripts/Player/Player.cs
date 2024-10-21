@@ -61,7 +61,15 @@ public class Player : MonoBehaviour
     }
     public void Die()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (PlayerMLAgent.instance != null)
+        {
+            PlayerMLAgent.instance.ResetEpisode();
+        }
+        else
+        {
+            GameController.Instance.ResetGame();
+        }
+        
 
     }
     void Update()
@@ -76,6 +84,12 @@ public class Player : MonoBehaviour
                 speed = defaultSpeed;
             }
         }
+    }
+    public void ResetPlayer()
+    {
+        transform.position = new Vector3(0, 0, 0);
+        Hp = DefaultHp;
+        Speed = defaultSpeed;
     }
 
 }

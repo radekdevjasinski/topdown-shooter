@@ -112,30 +112,34 @@ public class SpawnEnemies : MonoBehaviour
             yield return new WaitForSeconds(spawnCooldown);
         }
     }
-    public GameObject getClosestEnemy()
+    public List<GameObject> GetClosestEnemies(int count)
     {
-        GameObject closestEnemy = null;
-        float minDistance = Mathf.Infinity;
-
+        List<GameObject> enemies = new List<GameObject>();
         List<GameObject> children = new List<GameObject>();
 
+        // Dodajemy wszystkich przeciwników do listy
         foreach (Transform child in this.transform)
         {
             children.Add(child.gameObject);
         }
 
-        foreach (GameObject enemy in children)
+        // Sortujemy przeciwników wed³ug odleg³oœci od gracza
+        children.Sort((enemy1, enemy2) =>
         {
-            float distance = Vector3.Distance(Player.Instance.gameObject.transform.position, enemy.transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                closestEnemy = enemy;
-            }
+            float distance1 = Vector3.Distance(Player.Instance.gameObject.transform.position, enemy1.transform.position);
+            float distance2 = Vector3.Distance(Player.Instance.gameObject.transform.position, enemy2.transform.position);
+            return distance1.CompareTo(distance2);
+        });
+
+        // Dodajemy najbli¿szych przeciwników do listy
+        for (int i = 0; i < Mathf.Min(count, children.Count); i++)
+        {
+            enemies.Add(children[i]);
         }
 
-        return closestEnemy;
+        return enemies;
     }
+
     public void ClearAllEnemies()
     {
         List<GameObject> children = new List<GameObject>();

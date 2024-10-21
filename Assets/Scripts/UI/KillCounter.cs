@@ -31,4 +31,8 @@ public class KillCounter : MonoBehaviour
         killCount++;
         text.text = killCount.ToString();
     }
+    public void ResetCounter()
+    {
+        killCount = 0;
+    }
 }

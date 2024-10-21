@@ -1,23 +1,23 @@
 {
-    "Player": {
+    "Test 1.0": {
         "checkpoints": [
             {
-                "steps": 0,
-                "file_path": "results\\ppo\\Player\\Player-0.onnx",
-                "reward": null,
-                "creation_time": 1719956428.4801285,
+                "steps": 19416,
+                "file_path": "results\\ppo\\Test 1.0\\Test 1.0-19416.onnx",
+                "reward": -3.2999998051673174,
+                "creation_time": 1729523717.7160337,
                 "auxillary_file_paths": [
-                    "results\\ppo\\Player\\Player-0.pt"
+                    "results\\ppo\\Test 1.0\\Test 1.0-19416.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 0,
-            "file_path": "results\\ppo\\Player.onnx",
-            "reward": null,
-            "creation_time": 1719956428.4801285,
+            "steps": 19416,
+            "file_path": "results\\ppo\\Test 1.0.onnx",
+            "reward": -3.2999998051673174,
+            "creation_time": 1729523717.7160337,
             "auxillary_file_paths": [
-                "results\\ppo\\Player\\Player-0.pt"
+                "results\\ppo\\Test 1.0\\Test 1.0-19416.pt"
             ]
         }
     },

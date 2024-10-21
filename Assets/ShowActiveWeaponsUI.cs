@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShowActiveWeaponsUI : MonoBehaviour
 {
     [SerializeField] GameObject[] weaponsUI;
-    private void Start()
+    private void Update()
     {
         UpdateActiveWeaponsUI();
     }

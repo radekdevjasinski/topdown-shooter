@@ -13,6 +13,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private float experience;
     [SerializeField] private float expToNextLevel;
 
+    [Header("Pointers")]
+    [SerializeField] private SpawnEnemies enemySpawner;
+    [SerializeField] private ArsenalController arsenalController;
 
     private float threatSpikeTimer = 0;
     private static float spikeChangeTime = 5;
@@ -91,5 +94,19 @@ public class GameController : MonoBehaviour
     float LevelingFunction()
     {
         return 5  * level;
+    }
+    public void ResetGame()
+    {
+        Player.Instance.ResetPlayer();
+        enemySpawner.ClearAllEnemies();
+        arsenalController.ResetArsenal();
+        KillCounter.Instance.ResetCounter();
+        threatValue = 0;
+        threatSpeed = 0.1f;
+        threatSpikeTimer = 0;
+        spikeChangeTime = 5;
+        level = 1;
+        experience = 0;
+        expToNextLevel = LevelingFunction();
     }
 }

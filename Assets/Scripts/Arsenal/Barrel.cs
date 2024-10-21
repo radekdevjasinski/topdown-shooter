@@ -10,13 +10,16 @@ public class Barrel : WeaponBase
     public float barrelCooldown = 10f;
     public float dominoTime = 0.1f;
     [SerializeField] private float spawnRadius = 5f; 
-   private GameObject barrelPrefab; 
+    private GameObject barrelPrefab;
+    private float defaultDamage;
 
-    void Start()
+
+    protected override void Start()
     {
-        Level = 0;
         Cooldown = barrelCooldown;
+        defaultDamage = barrelDamage;
         barrelPrefab = Resources.Load<GameObject>("Prefabs/Weapons/BarrelObject");
+        base.Start();
     }
 
     private Vector3 GetRandomPositionAroundPlayer()
@@ -41,5 +44,11 @@ public class Barrel : WeaponBase
         Cooldown += weaponLevel.cooldownChange;
         barrelDamage += weaponLevel.damageChange;
         Level = weaponLevel.level;
+    }
+    public override void ResetToDefaultLevel()
+    {
+        Cooldown = barrelCooldown;
+        barrelDamage = defaultDamage;
+        base.ResetToDefaultLevel();
     }
 }

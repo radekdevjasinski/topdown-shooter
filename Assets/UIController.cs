@@ -7,6 +7,11 @@ public class UIController : MonoBehaviour
     public GameObject levelUpPanel;
     public GameObject displayPanel;
     public bool levelUpPanelOn;
+    private float defaultTimeScale;
+    private void Start()
+    {
+        defaultTimeScale = Time.timeScale;
+    }
     public void ShowLevelUp()
     {
         levelUpPanel.SetActive(true);
@@ -17,7 +22,7 @@ public class UIController : MonoBehaviour
     public void HideLevelUp()
     {
         levelUpPanel.SetActive(false);
-        Time.timeScale = 1;
+        Time.timeScale = defaultTimeScale;
         levelUpPanelOn = false;
         displayPanel.GetComponent<ShowActiveWeaponsUI>().UpdateActiveWeaponsUI();
     }

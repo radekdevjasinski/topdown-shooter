@@ -11,6 +11,7 @@ public class LevelUpScreen : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private ArsenalController arsenalController;
     [SerializeField] private UIController uIController;
+    public WeaponLevel[] activeCards = new WeaponLevel[3];
     private void Start()
     {
         SetUpLevelScreen();
@@ -60,6 +61,7 @@ public class LevelUpScreen : MonoBehaviour
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => arsenalController.UpgradeWeaponWithId(weaponLevel.weaponId, weaponLevel));
             button.onClick.AddListener(() => uIController.HideLevelUp());
+            SaveCardsToChoose(weaponLevel);
 
         }
     }
@@ -80,6 +82,14 @@ public class LevelUpScreen : MonoBehaviour
         foreach (Transform child in options.transform)
         {
             Destroy(child.gameObject);
+        }
+        activeCards = new WeaponLevel[3];
+    }
+    void SaveCardsToChoose(WeaponLevel weaponLevel)
+    {
+        for (int i = 0; i < activeCards.Length; i++)
+        {
+            activeCards[i] = weaponLevel;
         }
     }
 }

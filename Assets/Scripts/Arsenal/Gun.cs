@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Gun : WeaponBase
 {
-
     private GameObject bulletPrefab;
     [SerializeField] private float GunCooldown;
     [SerializeField] private float DetectionRadius;
@@ -13,16 +12,14 @@ public class Gun : WeaponBase
 
     private bool canShoot = true;
     private Vector3 targetPosition;
-    private void Awake()
-    {
-        Level = 1;
-        Cooldown = GunCooldown;
-    }
-    void Start()
-    {
-        Activate();
+    private float defaultDamage;
 
+    protected override void Start()
+    {
+        Cooldown = GunCooldown;
+        defaultDamage = GunDamage;
         bulletPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Bullet");
+        base.Start();
     }
 
     protected override void Update()
@@ -91,5 +88,11 @@ public class Gun : WeaponBase
         Cooldown += weaponLevel.cooldownChange;
         GunDamage += weaponLevel.damageChange;
         Level = weaponLevel.level;
+    }
+    public override void ResetToDefaultLevel()
+    {
+        Cooldown = GunCooldown;
+        GunDamage = defaultDamage;
+        base.ResetToDefaultLevel();
     }
 }

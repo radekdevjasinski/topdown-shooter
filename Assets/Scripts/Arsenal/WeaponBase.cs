@@ -7,7 +7,16 @@ public abstract class WeaponBase : MonoBehaviour, IWeapon
     public int Level { get; set; }
     public float Cooldown { get; set; }
     public float cooldownTimer;
+    public int DefaultLevel;
     public WeaponLevel[] weaponLevels;
+    protected virtual void Start()
+    {
+        Level = DefaultLevel;
+        if (Level > 0)
+        {
+            Activate();
+        }
+    }
 
    //metoda aktywuj¹ca umiejêtnoœæ
     public void Activate()
@@ -16,6 +25,15 @@ public abstract class WeaponBase : MonoBehaviour, IWeapon
         {
             cooldownTimer = Cooldown;
             IsActive = true;
+        }
+        
+    }
+    public void DeActivate()
+    {
+        if (IsActive)
+        {
+            cooldownTimer = 0;
+            IsActive = false;
         }
     }
     //mechanizm zegara w funkcji Update
@@ -60,4 +78,13 @@ public abstract class WeaponBase : MonoBehaviour, IWeapon
             Activate();
         }
     }
+    public virtual void ResetToDefaultLevel()
+    {
+        Level = DefaultLevel;
+        if (Level == 0)
+        {
+            DeActivate();
+        }
+    }
+    
 }

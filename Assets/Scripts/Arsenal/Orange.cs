@@ -11,12 +11,15 @@ public class Orange : WeaponBase
     [SerializeField] private float speed;
 
     private GameObject orangePrefab;
+    private float defaultHeal;
 
-    void Start()
+
+    protected override void Start()
     {
-        Level = 0;
         Cooldown = OrangeCooldown;
+        defaultHeal = heal;
         orangePrefab = Resources.Load<GameObject>("Prefabs/Weapons/Orange");
+        base.Start();
     }
     protected override void Execute()
     {
@@ -38,5 +41,11 @@ public class Orange : WeaponBase
         Cooldown += weaponLevel.cooldownChange;
         heal += weaponLevel.damageChange;
         Level = weaponLevel.level;
+    }
+    public override void ResetToDefaultLevel()
+    {
+        Cooldown = OrangeCooldown;
+        heal = defaultHeal;
+        base.ResetToDefaultLevel();
     }
 }

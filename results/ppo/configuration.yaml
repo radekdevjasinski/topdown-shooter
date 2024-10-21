@@ -1,6 +1,6 @@
 default_settings: null
 behaviors:
-  Player:
+  Test 1.0:
     trainer_type: ppo
     hyperparameters:
       batch_size: 1024
