@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private ArsenalController arsenalController;
 
     private float threatSpikeTimer = 0;
-    private static float spikeChangeTime = 5;
+    private static float spikeChangeTime = 15;
     private UIController uIController;
 
     public static GameController Instance;
@@ -102,9 +102,9 @@ public class GameController : MonoBehaviour
         arsenalController.ResetArsenal();
         KillCounter.Instance.ResetCounter();
         threatValue = 0;
-        threatSpeed = 0.1f;
+        threatSpeed = 0.3f;
         threatSpikeTimer = 0;
-        spikeChangeTime = 5;
+        spikeChangeTime = 15;
         level = 1;
         experience = 0;
         expToNextLevel = LevelingFunction();

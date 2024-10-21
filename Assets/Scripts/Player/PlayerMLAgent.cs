@@ -20,6 +20,7 @@ public class PlayerMLAgent : Agent
     [SerializeField] private SpawnEnemies enemySpawner;
     [SerializeField] private LevelUpScreen levelUpSceen;
     [SerializeField] private ArsenalController arsenalController;
+    private RayPerceptionSensorComponent2D raySensor;
     public static PlayerMLAgent instance;
 
     [Header("UI")]
@@ -45,6 +46,7 @@ public class PlayerMLAgent : Agent
         animator.SetFloat("WasFacing", -1);
         Player.Instance.GetComponent<PlayerMovement>().enabled = false;
         Player.Instance.GetComponent<PlayerInput>().enabled = false;
+        raySensor = GetComponentInChildren<RayPerceptionSensorComponent2D>();
 
     }
     public override void OnEpisodeBegin()
@@ -60,15 +62,32 @@ public class PlayerMLAgent : Agent
         Vector2 playerPos = Player.Instance.transform.position;
         sensor.AddObservation(playerPos);
 
+        
+        sensor.AddObservation(EnemiesInRange());
+
         texts[0].text = "iteration " + iter;
         texts[1].text = "reward " + GetCumulativeReward().ToString("F2");
 
     }
+    bool EnemiesInRange()
+    {
+        RayPerceptionInput input = raySensor.GetRayPerceptionInput();
+        RayPerceptionOutput output = RayPerceptionSensor.Perceive(input);
+        // Sprawdzenie, czy promienie coœ wykry³y
+        foreach (var rayOutput in output.RayOutputs)
+        {
+            if (rayOutput.HitTaggedObject) // Obiekt z tagiem zosta³ wykryty
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
-        continuousActions[0] = movementInput.x;
-        continuousActions[1] = movementInput.y;
+        ActionSegment<float> discreteActions = actionsOut.ContinuousActions;
+        discreteActions[0] = movementInput.x;
+        discreteActions[1] = movementInput.y;
 
     }
     public override void OnActionReceived(ActionBuffers actions)
@@ -96,6 +115,10 @@ public class PlayerMLAgent : Agent
 
         //wybierz losowe ulepszenia
         RandomUpgrades();
+        if (!EnemiesInRange())
+        {
+            AddReward(-0.1f * Time.deltaTime);
+        }
 
     }
     private void OnMove(InputValue input)

@@ -833,7 +833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   threatValue: 0
-  threatSpeed: 0.1
+  threatSpeed: 0.3
   level: 0
   experience: 0
   expToNextLevel: 0
@@ -2292,6 +2292,7 @@ GameObject:
   - component: {fileID: 830318680}
   - component: {fileID: 830318679}
   - component: {fileID: 830318681}
+  - component: {fileID: 830318683}
   m_Layer: 8
   m_Name: MLAgent
   m_TagString: Player
@@ -2331,7 +2332,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
+  MaxStep: 10000
   movementInput: {x: 0, y: 0}
   uIController: {fileID: 219668177}
   enemySpawner: {fileID: 1613703946}
@@ -2355,7 +2356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 2
+    VectorObservationSize: 3
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
@@ -2364,10 +2365,10 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 7b2ab00d9f751f04ba40975a62df8934, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 0
-  m_BehaviorName: Test 1.0
+  m_BehaviorType: 2
+  m_BehaviorName: playerMLAgent
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -2416,6 +2417,22 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &830318683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830318671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Record: 0
+  NumStepsToRecord: 0
+  DemonstrationName: PlayerRunEasy
+  DemonstrationDirectory: Demos
 --- !u!1 &838543719
 GameObject:
   m_ObjectHideFlags: 0
@@ -4275,7 +4292,7 @@ MonoBehaviour:
   - {fileID: 7280718620659616017, guid: 85e22561f8e41bc4781cbdcf21226737, type: 3}
   - {fileID: 7280718620659616017, guid: 60b2ecc159284324ba17b9fe7896bdc2, type: 3}
   spawnDistance: 10
-  spawnCooldown: 0.5
+  spawnCooldown: 2
   maxEnemiesCount: 500
   removeDistance: 15
   removeCheckInterval: 10
