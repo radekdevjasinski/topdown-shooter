@@ -25,7 +25,7 @@ public class SimpleAttackStrategy : MonoBehaviour, IAttackStrategy
         if (inContactwithPlayer)
         {
             float damage = gameObject.GetComponent<Enemy>().attack * Time.fixedDeltaTime;
-            Player.Instance.ChangeHp(-damage);
+            //Player.Instance.ChangeHp(-damage);
             if (PlayerMLAgent.instance != null)
             {
                 PlayerMLAgent.instance.AddReward(-damage);

@@ -24,38 +24,42 @@ public class Gun : WeaponBase
 
     protected override void Update()
     {
-        LayerMask enemyLayer = LayerMask.GetMask("Enemy");
-        LayerMask flyingEnemy = LayerMask.GetMask("FlyingEnemy");
-        LayerMask barrel = LayerMask.GetMask("Barrel");
-
-        LayerMask enemies = enemyLayer | flyingEnemy | barrel;
-        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, DetectionRadius, enemies);
-
-        if (enemiesInRange.Length > 0 && canShoot)
+        if (IsActive)
         {
-            Collider2D nearestEnemy = enemiesInRange[0];
-            float shortestDistance = Vector2.Distance(transform.position, nearestEnemy.transform.position);
+            LayerMask enemyLayer = LayerMask.GetMask("Enemy");
+            LayerMask flyingEnemy = LayerMask.GetMask("FlyingEnemy");
+            LayerMask barrel = LayerMask.GetMask("Barrel");
 
-            foreach (Collider2D enemy in enemiesInRange)
+            LayerMask enemies = enemyLayer | flyingEnemy | barrel;
+            Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, DetectionRadius, enemies);
+
+            if (enemiesInRange.Length > 0 && canShoot)
             {
-                float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
-                if (distanceToEnemy < shortestDistance)
-                {
-                    nearestEnemy = enemy;
-                    shortestDistance = distanceToEnemy;
-                }
-            }
+                Collider2D nearestEnemy = enemiesInRange[0];
+                float shortestDistance = Vector2.Distance(transform.position, nearestEnemy.transform.position);
 
-            targetPosition = nearestEnemy.transform.position;
-            Execute();
-            StartCoroutine(ShootCoroutine());
-            
+                foreach (Collider2D enemy in enemiesInRange)
+                {
+                    float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
+                    if (distanceToEnemy < shortestDistance)
+                    {
+                        nearestEnemy = enemy;
+                        shortestDistance = distanceToEnemy;
+                    }
+                }
+
+                targetPosition = nearestEnemy.transform.position;
+                Execute();
+                StartCoroutine(ShootCoroutine());
+
+            }
+            if (canShoot == false)
+            {
+                if (cooldownTimer < Cooldown) cooldownTimer += Time.deltaTime;
+                if (cooldownTimer > Cooldown) cooldownTimer = Cooldown;
+            }
         }
-        if (canShoot == false)
-        {
-            if (cooldownTimer < Cooldown) cooldownTimer += Time.deltaTime;
-            if (cooldownTimer > Cooldown) cooldownTimer = Cooldown;
-        }
+       
     }
 
     IEnumerator ShootCoroutine()

@@ -14,7 +14,7 @@ public class SimpleDamageStrategy : MonoBehaviour, IDamageStrategy
             GameController.Instance.AddExp(enemy.threatCost);
             if (PlayerMLAgent.instance != null)
             {
-                PlayerMLAgent.instance.AddReward(enemy.threatCost);
+                PlayerMLAgent.instance.AddReward(enemy.threatCost * 5);
             }
         }
     }

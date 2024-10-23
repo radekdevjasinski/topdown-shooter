@@ -7,6 +7,7 @@ using Unity.MLAgents.Actuators;
 using UnityEngine.Tilemaps;
 using TMPro;
 using UnityEngine.InputSystem;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class PlayerMLAgent : Agent
 {
@@ -20,11 +21,20 @@ public class PlayerMLAgent : Agent
     [SerializeField] private SpawnEnemies enemySpawner;
     [SerializeField] private LevelUpScreen levelUpSceen;
     [SerializeField] private ArsenalController arsenalController;
-    private RayPerceptionSensorComponent2D raySensor;
     public static PlayerMLAgent instance;
 
+    [SerializeField] private RayPerceptionSensorComponent2D raySensorEnemies;
+    
+
+
     [Header("UI")]
-    public TMP_Text[] texts;
+    [SerializeField] private GameObject panelMLAgent;
+    [SerializeField] private GameObject panelObserwations;
+    [SerializeField] private GameObject panelActions;
+
+    [SerializeField] private GameObject textPrefab;
+    private Dictionary<string, GameObject> consoleTexts = new();
+
     public int iter = 0;
     void Awake()
     {
@@ -46,58 +56,94 @@ public class PlayerMLAgent : Agent
         animator.SetFloat("WasFacing", -1);
         Player.Instance.GetComponent<PlayerMovement>().enabled = false;
         Player.Instance.GetComponent<PlayerInput>().enabled = false;
-        raySensor = GetComponentInChildren<RayPerceptionSensorComponent2D>();
 
     }
     public override void OnEpisodeBegin()
     {
         GameController.Instance.ResetGame();
-
-        Debug.Log("Episode started");
         iter++;
+        ConsoleText(panelMLAgent, "iteration", iter.ToString());
+        SetReward(0);
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        // Pozycja gracza
+        ConsoleText(panelMLAgent, "reward", GetCumulativeReward().ToString("F2"));
+        
+        // pozycja gracza vector2
         Vector2 playerPos = Player.Instance.transform.position;
         sensor.AddObservation(playerPos);
+        ConsoleText(panelObserwations, "pos", playerPos.x.ToString("F2") + ", " + playerPos.y.ToString("F2"));
 
-        
-        sensor.AddObservation(EnemiesInRange());
+        //// czy przeciwnicy w poblizu 0/1
+        //sensor.AddObservation(RayDetectedEnemy(raySensorEnemies));
+        //ConsoleText(panelObserwations, "enemies-close", RayDetectedEnemy(raySensorEnemies).ToString());
 
-        texts[0].text = "iteration " + iter;
-        texts[1].text = "reward " + GetCumulativeReward().ToString("F2");
+
+        //skierowany w 0 -> lewo, 1 -> prawo
+        sensor.AddObservation(PlayerSide());
+        ConsoleText(panelObserwations, "player-side", PlayerSide().ToString());
+
+        // ilosc zycia
+        //sensor.AddObservation(Player.Instance.Hp);
+        //ConsoleText(panelObserwations, "health", Player.Instance.Hp.ToString("F2"));
+
 
     }
-    bool EnemiesInRange()
+    
+    int RayDetectedEnemy(RayPerceptionSensorComponent2D rayType)
     {
-        RayPerceptionInput input = raySensor.GetRayPerceptionInput();
+        RayPerceptionInput input = rayType.GetRayPerceptionInput();
         RayPerceptionOutput output = RayPerceptionSensor.Perceive(input);
         // Sprawdzenie, czy promienie coœ wykry³y
         foreach (var rayOutput in output.RayOutputs)
         {
             if (rayOutput.HitTaggedObject) // Obiekt z tagiem zosta³ wykryty
             {
-                return true;
+                return 1;
             }
         }
-        return false;
+        return 0;
+    }
+    int PlayerSide()
+    {
+        if (animator.GetFloat("WasFacing") > 0) return 1;
+        return 0;
     }
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        ActionSegment<float> discreteActions = actionsOut.ContinuousActions;
-        discreteActions[0] = movementInput.x;
-        discreteActions[1] = movementInput.y;
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
 
+        // x
+        if (movementInput.x < 0)
+            discreteActions[0] = 0; // -1 ruch
+        else if (movementInput.x == 0)
+            discreteActions[0] = 1; // brak ruchu
+        else
+            discreteActions[0] = 2; // +1 ruch
+
+        // y
+        if (movementInput.y < 0)
+            discreteActions[1] = 0; // -1 ruch
+        else if (movementInput.y == 0)
+            discreteActions[1] = 1; // brak ruchu
+        else
+            discreteActions[1] = 2; // +1 ruch
     }
+
     public override void OnActionReceived(ActionBuffers actions)
     {
-        float moveX = actions.ContinuousActions[0];
-        float moveY = actions.ContinuousActions[1];
+        int moveX = actions.DiscreteActions[0];  // 0 -> -1, 1 -> 0, 2 -> +1
+        int moveY = actions.DiscreteActions[1];  // 0 -> -1, 1 -> 0, 2 -> +1
 
-        movement = new Vector2(moveX, moveY);
-        texts[2].text = "move " + moveX.ToString("F2") + ", " + moveY.ToString("F2");
+        float mappedMoveX = moveX == 0 ? -1f : (moveX == 1 ? 0f : 1f);
+        float mappedMoveY = moveY == 0 ? -1f : (moveY == 1 ? 0f : 1f);
+
+        //znormalizowany wektor, czyli wartoœæ 0.7, gdy porusza siê na skos
+        movement = new Vector2(mappedMoveX, mappedMoveY).normalized;
+        ConsoleText(panelActions, "move", movement.x.ToString("F2") + ", " + movement.y.ToString("F2"));
+
     }
+
     void FixedUpdate()
     {
         rigidbody.velocity = movement * speed * Time.deltaTime;
@@ -115,10 +161,11 @@ public class PlayerMLAgent : Agent
 
         //wybierz losowe ulepszenia
         RandomUpgrades();
-        if (!EnemiesInRange())
-        {
-            AddReward(-0.1f * Time.deltaTime);
-        }
+
+        //if (RayDetectedEnemy(raySensorEnemies) == 1)
+        //{
+        //    AddReward(0.1f * Time.deltaTime);
+        //}
 
     }
     private void OnMove(InputValue input)
@@ -127,8 +174,6 @@ public class PlayerMLAgent : Agent
     }
     public void ResetEpisode()
     {
-        //SetReward(-1f);
-        Debug.Log("Episode ended");
         EndEpisode();
     }
     void RandomUpgrades()
@@ -138,10 +183,23 @@ public class PlayerMLAgent : Agent
             WeaponLevel selectedUpgrade = levelUpSceen.activeCards[Random.Range(0, levelUpSceen.activeCards.Length)];
             if (selectedUpgrade != null)
             {
-                Debug.Log("Wybrana bron: " + selectedUpgrade.weaponId + " " + selectedUpgrade.name);
                 arsenalController.UpgradeWeaponWithId(selectedUpgrade.weaponId, selectedUpgrade);
             }
             uIController.HideLevelUp();
+        }
+    }
+    private void ConsoleText(GameObject section, string name, string value)
+    {
+        if (consoleTexts.TryGetValue(name, out GameObject foundObject))
+        {
+            TMP_Text text = foundObject.GetComponent<TMP_Text>();
+            text.text = name + ": " + value;
+        }
+        else
+        {
+            GameObject newText = Instantiate(textPrefab, section.transform);
+            newText.GetComponent<TMP_Text>().text = name + ": " + value;
+            consoleTexts.Add(name, newText);
         }
     }
 }

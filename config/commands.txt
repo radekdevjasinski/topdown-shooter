@@ -1,0 +1,7 @@
+mlagents-learn 
+config/playerMLAgent.yaml
+--force
+--run-id=
+--resume
+
+tensorboard --logdir results
