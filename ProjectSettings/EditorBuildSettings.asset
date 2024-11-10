@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/Scenes/main.unity
+  - enabled: 0
+    path: Assets/Scenes/mlagents default env.unity
     guid: 6b663fa079be5bd488725c386932295e
+  - enabled: 1
+    path: Assets/Scenes/mlagents hard env.unity
+    guid: f7d9e222ed5458b43997979845d6db3f
   m_configObjects: {}

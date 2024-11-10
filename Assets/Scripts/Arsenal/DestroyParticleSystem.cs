@@ -7,7 +7,8 @@ public class DestroyParticleSystem : MonoBehaviour
     void Start()
     {
         ParticleSystem particle = GetComponent<ParticleSystem>();
-        float time = particle.duration;
+        float time = particle.main.duration + 1;
+        StartCoroutine(destroyParticle(time));
     }
     IEnumerator destroyParticle(float time)
     {

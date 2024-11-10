@@ -4,10 +4,9 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
-using UnityEngine.Tilemaps;
+using Unity.MLAgents.SideChannels;
 using TMPro;
 using UnityEngine.InputSystem;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 public class PlayerMLAgent : Agent
 {
@@ -25,15 +24,18 @@ public class PlayerMLAgent : Agent
 
     [SerializeField] private RayPerceptionSensorComponent2D raySensorEnemies;
     
-
-
     [Header("UI")]
     [SerializeField] private GameObject panelMLAgent;
     [SerializeField] private GameObject panelObserwations;
     [SerializeField] private GameObject panelActions;
 
+    [Header("Stats")]
     [SerializeField] private GameObject textPrefab;
     private Dictionary<string, GameObject> consoleTexts = new();
+    private float distanceCovered;
+    private Vector2 lastPosition;
+    private StatsRecorder statsRecorder;
+
 
     public int iter = 0;
     void Awake()
@@ -57,13 +59,17 @@ public class PlayerMLAgent : Agent
         Player.Instance.GetComponent<PlayerMovement>().enabled = false;
         Player.Instance.GetComponent<PlayerInput>().enabled = false;
 
+        statsRecorder = Academy.Instance.StatsRecorder;
+
     }
     public override void OnEpisodeBegin()
     {
         GameController.Instance.ResetGame();
+        distanceCovered = 0;
         iter++;
         ConsoleText(panelMLAgent, "iteration", iter.ToString());
         SetReward(0);
+
     }
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -79,35 +85,14 @@ public class PlayerMLAgent : Agent
         //ConsoleText(panelObserwations, "enemies-close", RayDetectedEnemy(raySensorEnemies).ToString());
 
 
-        //skierowany w 0 -> lewo, 1 -> prawo
-        sensor.AddObservation(PlayerSide());
-        ConsoleText(panelObserwations, "player-side", PlayerSide().ToString());
+        ////skierowany w 0 -> lewo, 1 -> prawo
+        //sensor.AddObservation(PlayerSide());
+        //ConsoleText(panelObserwations, "player-side", PlayerSide().ToString());
 
         // ilosc zycia
         //sensor.AddObservation(Player.Instance.Hp);
         //ConsoleText(panelObserwations, "health", Player.Instance.Hp.ToString("F2"));
 
-
-    }
-    
-    int RayDetectedEnemy(RayPerceptionSensorComponent2D rayType)
-    {
-        RayPerceptionInput input = rayType.GetRayPerceptionInput();
-        RayPerceptionOutput output = RayPerceptionSensor.Perceive(input);
-        // Sprawdzenie, czy promienie coœ wykry³y
-        foreach (var rayOutput in output.RayOutputs)
-        {
-            if (rayOutput.HitTaggedObject) // Obiekt z tagiem zosta³ wykryty
-            {
-                return 1;
-            }
-        }
-        return 0;
-    }
-    int PlayerSide()
-    {
-        if (animator.GetFloat("WasFacing") > 0) return 1;
-        return 0;
     }
     public override void Heuristic(in ActionBuffers actionsOut)
     {
@@ -142,6 +127,13 @@ public class PlayerMLAgent : Agent
         movement = new Vector2(mappedMoveX, mappedMoveY).normalized;
         ConsoleText(panelActions, "move", movement.x.ToString("F2") + ", " + movement.y.ToString("F2"));
 
+        // Oblicz przemieszczenie od ostatniej pozycji
+        Vector2 currentPosition = Player.Instance.transform.position;
+        distanceCovered += Vector2.Distance(lastPosition, currentPosition);
+        lastPosition = currentPosition;
+        ConsoleText(panelMLAgent, "distance", distanceCovered.ToString("F2"));
+        ConsoleText(panelMLAgent, "killed", KillCounter.Instance.killCount.ToString());
+
     }
 
     void FixedUpdate()
@@ -156,17 +148,8 @@ public class PlayerMLAgent : Agent
     }
     void Update()
     {
-        //nagroda dla agenta w czasie
-        //AddReward(Time.deltaTime);
-
         //wybierz losowe ulepszenia
         RandomUpgrades();
-
-        //if (RayDetectedEnemy(raySensorEnemies) == 1)
-        //{
-        //    AddReward(0.1f * Time.deltaTime);
-        //}
-
     }
     private void OnMove(InputValue input)
     {
@@ -174,8 +157,18 @@ public class PlayerMLAgent : Agent
     }
     public void ResetEpisode()
     {
+        statsRecorder.Add("Enemies/Enemies Killed", KillCounter.Instance.killCount);
+        statsRecorder.Add("Distance/Distance Covered", KillCounter.Instance.killCount);
         EndEpisode();
     }
+    public void LoseEpisode()
+    {
+        AddReward(-10f);
+        statsRecorder.Add("Enemies/Enemies Killed", KillCounter.Instance.killCount);
+        statsRecorder.Add("Distance/Distance Covered", KillCounter.Instance.killCount);
+        EndEpisode();
+    }
+    
     void RandomUpgrades()
     {
         if (uIController.levelUpPanelOn)

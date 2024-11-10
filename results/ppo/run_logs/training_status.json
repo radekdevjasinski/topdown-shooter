@@ -1,26 +1,4 @@
 {
-    "Test 1.0": {
-        "checkpoints": [
-            {
-                "steps": 19416,
-                "file_path": "results\\ppo\\Test 1.0\\Test 1.0-19416.onnx",
-                "reward": -3.2999998051673174,
-                "creation_time": 1729523717.7160337,
-                "auxillary_file_paths": [
-                    "results\\ppo\\Test 1.0\\Test 1.0-19416.pt"
-                ]
-            }
-        ],
-        "final_checkpoint": {
-            "steps": 19416,
-            "file_path": "results\\ppo\\Test 1.0.onnx",
-            "reward": -3.2999998051673174,
-            "creation_time": 1729523717.7160337,
-            "auxillary_file_paths": [
-                "results\\ppo\\Test 1.0\\Test 1.0-19416.pt"
-            ]
-        }
-    },
     "metadata": {
         "stats_format_version": "0.3.0",
         "mlagents_version": "0.30.0",

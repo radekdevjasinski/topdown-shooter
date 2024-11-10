@@ -73,7 +73,7 @@ public class BarrelObject : MonoBehaviour
             lineRenderer.enabled = false;
         }
         explosion.GetComponent<ParticleSystem>().Play();
-        StartCoroutine(Destroy(explosion.GetComponent<ParticleSystem>().duration));
+        StartCoroutine(Destroy(explosion.GetComponent<ParticleSystem>().main.duration));
         
     }
     IEnumerator Destroy(float time)

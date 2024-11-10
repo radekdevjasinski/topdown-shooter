@@ -1,0 +1,65 @@
+{
+    "playerMLAgent": {
+        "checkpoints": [
+            {
+                "steps": 349952,
+                "file_path": "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-349952.onnx",
+                "reward": null,
+                "creation_time": 1730759366.218923,
+                "auxillary_file_paths": [
+                    "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-349952.pt"
+                ]
+            },
+            {
+                "steps": 399968,
+                "file_path": "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-399968.onnx",
+                "reward": null,
+                "creation_time": 1730759521.276923,
+                "auxillary_file_paths": [
+                    "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-399968.pt"
+                ]
+            },
+            {
+                "steps": 449968,
+                "file_path": "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-449968.onnx",
+                "reward": 29.54000353316466,
+                "creation_time": 1730759672.8299305,
+                "auxillary_file_paths": [
+                    "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-449968.pt"
+                ]
+            },
+            {
+                "steps": 499952,
+                "file_path": "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-499952.onnx",
+                "reward": 25.446670150384307,
+                "creation_time": 1730759828.3229237,
+                "auxillary_file_paths": [
+                    "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-499952.pt"
+                ]
+            },
+            {
+                "steps": 500016,
+                "file_path": "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-500016.onnx",
+                "reward": 25.446670150384307,
+                "creation_time": 1730759828.4309232,
+                "auxillary_file_paths": [
+                    "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-500016.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500016,
+            "file_path": "results\\PlayerServerHuman\\playerMLAgent.onnx",
+            "reward": 25.446670150384307,
+            "creation_time": 1730759828.4309232,
+            "auxillary_file_paths": [
+                "results\\PlayerServerHuman\\playerMLAgent\\playerMLAgent-500016.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.5.1+cpu"
+    }
+}

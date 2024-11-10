@@ -1,0 +1,3 @@
+behaviors:
+  playerMLAgent:
+    max_steps: 50000000

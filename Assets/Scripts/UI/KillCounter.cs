@@ -7,7 +7,7 @@ public class KillCounter : MonoBehaviour
 {
     public static KillCounter Instance { get; private set; }
     TMP_Text text;
-    int killCount = 0;
+    public int killCount = 0;
     void Awake()
     {
         //stworzenie instancji

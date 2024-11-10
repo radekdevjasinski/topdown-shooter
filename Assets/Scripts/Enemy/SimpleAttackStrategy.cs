@@ -28,7 +28,7 @@ public class SimpleAttackStrategy : MonoBehaviour, IAttackStrategy
             //Player.Instance.ChangeHp(-damage);
             if (PlayerMLAgent.instance != null)
             {
-                PlayerMLAgent.instance.AddReward(-damage);
+                PlayerMLAgent.instance.LoseEpisode();
             }
             
         }

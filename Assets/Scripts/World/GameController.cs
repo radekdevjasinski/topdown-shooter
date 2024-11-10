@@ -102,7 +102,7 @@ public class GameController : MonoBehaviour
         arsenalController.ResetArsenal();
         KillCounter.Instance.ResetCounter();
         threatValue = 0;
-        threatSpeed = 0.1f;
+        threatSpeed = 0.3f;
         threatSpikeTimer = 0;
         spikeChangeTime = 30;
         level = 1;
