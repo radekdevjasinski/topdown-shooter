@@ -13,8 +13,6 @@ public class Sword : WeaponBase
     public float SwordDamage;
 
     private float defaultDamage;
-    
-
     protected override void Start()
     {
         Cooldown = SwordCooldown;

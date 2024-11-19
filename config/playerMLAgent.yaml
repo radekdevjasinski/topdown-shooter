@@ -6,14 +6,14 @@ behaviors:
       extrinsic:
         strength: 1.0
         gamma: 0.99
-      gail:
-        strength: 0.1
-        gamma: 0.99
-        use_actions: true
-        demo_path: Demos/PlayerCoward.demo
-      curiosity:
-        strength: 0.02
-        gamma: 0.99
+      #gail:
+        #strength: 0.1
+        #gamma: 0.99
+        #use_actions: true
+        #demo_path: Demos/PlayerCoward.demo
+      #curiosity:
+        #strength: 0.02
+        #gamma: 0.99
     #behavioral_cloning:
       #strength: 0.5
       #steps: 500000

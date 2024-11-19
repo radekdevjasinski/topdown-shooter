@@ -333,10 +333,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869ec6bd6a01f2946ba2c33070daa0d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 30
   hp: 1
-  attack: 1
-  threatCost: 0.5
+  attack: 0.2
+  threatCost: 0.3
 --- !u!50 &1155009148464518095
 Rigidbody2D:
   serializedVersion: 4

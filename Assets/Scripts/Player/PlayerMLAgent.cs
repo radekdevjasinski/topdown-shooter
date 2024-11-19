@@ -54,7 +54,7 @@ public class PlayerMLAgent : Agent
         rigidbody = Player.Instance.GetComponent<Rigidbody2D>();
         animator = Player.Instance.GetComponent<Animator>();
         speed = Player.Instance.Speed;
-        //gracz zwrócony w lewo
+        //gracz zwrï¿½cony w lewo
         animator.SetFloat("WasFacing", -1);
         Player.Instance.GetComponent<PlayerMovement>().enabled = false;
         Player.Instance.GetComponent<PlayerInput>().enabled = false;
@@ -114,16 +114,18 @@ public class PlayerMLAgent : Agent
         else
             discreteActions[1] = 2; // +1 ruch
     }
-
+// Kiedy nastÄ™puje moment wykonania akcji
     public override void OnActionReceived(ActionBuffers actions)
     {
+        // Dwie akcje ktÃ³re wykonuje agent, ruch w poziomie i pionie
+
         int moveX = actions.DiscreteActions[0];  // 0 -> -1, 1 -> 0, 2 -> +1
         int moveY = actions.DiscreteActions[1];  // 0 -> -1, 1 -> 0, 2 -> +1
 
         float mappedMoveX = moveX == 0 ? -1f : (moveX == 1 ? 0f : 1f);
         float mappedMoveY = moveY == 0 ? -1f : (moveY == 1 ? 0f : 1f);
 
-        //znormalizowany wektor, czyli wartoœæ 0.7, gdy porusza siê na skos
+        // Znormalizowany wektor, czyli wartoÅ›Ä‡ 0.7, gdy porusza siÄ™ na skos
         movement = new Vector2(mappedMoveX, mappedMoveY).normalized;
         ConsoleText(panelActions, "move", movement.x.ToString("F2") + ", " + movement.y.ToString("F2"));
 

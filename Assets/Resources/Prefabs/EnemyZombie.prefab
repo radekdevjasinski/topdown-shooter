@@ -336,7 +336,7 @@ MonoBehaviour:
   speed: 80
   hp: 15
   attack: 5
-  threatCost: 4
+  threatCost: 5
 --- !u!50 &1155009148464518095
 Rigidbody2D:
   serializedVersion: 4

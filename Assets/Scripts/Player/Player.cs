@@ -58,6 +58,11 @@ public class Player : MonoBehaviour
             Die();
         }
         hp = Mathf.Clamp(hp, 0, defaultHp);
+
+        if (PlayerMLAgent.instance!= null && amount < 0)    
+        {
+            PlayerMLAgent.instance.AddReward(amount * 10);
+        }
     }
     public void Die()
     {

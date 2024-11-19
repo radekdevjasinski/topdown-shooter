@@ -7,7 +7,7 @@ public class DestroyAfterTime : MonoBehaviour
 
     void Start()
     {
-        // Zniszczenie obiektu po up³ywie podanego czasu
+        // Zniszczenie obiektu po upï¿½ywie podanego czasu
         Destroy(gameObject, destroyTime);
     }
 }

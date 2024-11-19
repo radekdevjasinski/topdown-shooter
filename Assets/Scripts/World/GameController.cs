@@ -57,8 +57,11 @@ public class GameController : MonoBehaviour
     }
     void Update()
     {
+        // wartość zagrożenia stale rośnie
         threatValue += Time.deltaTime * threatSpeed;
         threatSpikeTimer += Time.deltaTime;
+
+        // co jakiś czas zmienia się prędkość wzrostu zagrożenia
         if (threatSpikeTimer > spikeChangeTime)
         {
             threatSpeed += 0.1f;

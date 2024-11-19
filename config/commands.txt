@@ -4,4 +4,7 @@ config/playerMLAgent.yaml
 --run-id=
 --resume
 
+mlagents-learn config\playerMLAgent.yaml --run-id=MLAgentDefault --initialize-from=MLAgentHard --env=builds\serverBuild\gangplank --num-envs=8
+
+
 tensorboard --logdir results

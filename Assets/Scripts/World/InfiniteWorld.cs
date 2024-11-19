@@ -31,10 +31,15 @@ public class InfiniteWorld : MonoBehaviour
             lastPlayerPosition = playerPosition;
         }
     }
+    // Co jaki≈õ czas, gdy zmieni siƒô pozycja gracza, wygeneruj nowe sektory wok√≥≈Ç gracza i usu≈Ñ stare
     void UpdateWorld()
     {
-        Vector2Int playerGridPosition = new Vector2Int(Mathf.RoundToInt(Player.Instance.gameObject.transform.position.x / gridSizeX), Mathf.RoundToInt(Player.Instance.gameObject.transform.position.y / gridSizeY));
-        // Sprawdü sπsiednie sektory w promieniu 1 jednostki gridu
+        // Sprawd≈∫ na kt√≥rym sektorze jest gracz
+        Vector2Int playerGridPosition = 
+            new Vector2Int(Mathf.RoundToInt(Player.Instance.gameObject.transform.position.x / gridSizeX), 
+            Mathf.RoundToInt(Player.Instance.gameObject.transform.position.y / gridSizeY));
+
+        // Sprawd≈∫ sƒÖsiednie sektory w promieniu 1 jednostki gridu
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
@@ -42,7 +47,7 @@ public class InfiniteWorld : MonoBehaviour
                 Vector2Int gridPos = new Vector2Int(playerGridPosition.x + x, playerGridPosition.y + y);
                 float distance = Vector2.Distance(Player.Instance.gameObject.transform.position, new Vector2(gridPos.x * gridSizeX, gridPos.y * gridSizeY));
 
-                // Generuj sektor, jeúli nie istnieje
+                // Generuj sektor, je≈õli nie istnieje
                 if (!activeChunks.ContainsKey(gridPos))
                 {
                     GameObject newChunk = CreateGridChunk(gridPos);
@@ -52,7 +57,7 @@ public class InfiniteWorld : MonoBehaviour
             }
         }
 
-        // UsuÒ sektory, ktÛre sπ poza zasiÍgiem
+        // Usu≈Ñ sektory, kt√≥re sƒÖ poza zasiƒôgiem
         List<Vector2Int> chunksToRemove = new List<Vector2Int>();
         foreach (var chunk in activeChunks)
         {
@@ -65,7 +70,7 @@ public class InfiniteWorld : MonoBehaviour
             }
         }
 
-        // UsuÒ sektory z mapy
+        // Usu≈Ñ sektory z mapy
         foreach (var chunkPos in chunksToRemove)
         {
             Destroy(activeChunks[chunkPos]);

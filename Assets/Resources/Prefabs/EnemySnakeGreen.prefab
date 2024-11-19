@@ -258,10 +258,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8505686f275f75745aa55af4ccaa6d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 80
+  speed: 60
   hp: 2
   attack: 1
-  threatCost: 3
+  threatCost: 5
 --- !u!50 &1155009148464518095
 Rigidbody2D:
   serializedVersion: 4
