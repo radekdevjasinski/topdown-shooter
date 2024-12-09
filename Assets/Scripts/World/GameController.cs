@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour
         experience = 0;
         expToNextLevel = LevelingFunction();
         uIController = GetComponent<UIController>();
+        Time.timeScale = 1;
     }
     void Update()
     {
@@ -79,7 +80,10 @@ public class GameController : MonoBehaviour
     public void AddExp(float value)
     {
         experience += value;
-        ExpSlider.Instance.UpdateExpSlider();
+        if(ExpSlider.Instance != null)
+        {
+            ExpSlider.Instance.UpdateExpSlider();
+        }
         if (experience >= expToNextLevel)
         {
             LevelUp();
@@ -90,8 +94,11 @@ public class GameController : MonoBehaviour
         experience = 0;
         level++;
         expToNextLevel = LevelingFunction();
-        ExpSlider.Instance.UpdateExpSlider();
         uIController.ShowLevelUp();
+        if (ExpSlider.Instance != null)
+        {
+            ExpSlider.Instance.UpdateExpSlider();
+        }
 
     }
     float LevelingFunction()
@@ -103,7 +110,10 @@ public class GameController : MonoBehaviour
         Player.Instance.ResetPlayer();
         enemySpawner.ClearAllEnemies();
         arsenalController.ResetArsenal();
-        KillCounter.Instance.ResetCounter();
+        if(KillCounter.Instance != null)
+        {
+            KillCounter.Instance.ResetCounter();
+        }
         threatValue = 0;
         threatSpeed = 0.3f;
         threatSpikeTimer = 0;

@@ -134,7 +134,10 @@ public class PlayerMLAgent : Agent
         distanceCovered += Vector2.Distance(lastPosition, currentPosition);
         lastPosition = currentPosition;
         ConsoleText(panelMLAgent, "distance", distanceCovered.ToString("F2"));
-        ConsoleText(panelMLAgent, "killed", KillCounter.Instance.killCount.ToString());
+        if(KillCounter.Instance != null)
+        {
+            ConsoleText(panelMLAgent, "killed", KillCounter.Instance.killCount.ToString());
+        }
 
     }
 
@@ -159,15 +162,21 @@ public class PlayerMLAgent : Agent
     }
     public void ResetEpisode()
     {
-        statsRecorder.Add("Enemies/Enemies Killed", KillCounter.Instance.killCount);
-        statsRecorder.Add("Distance/Distance Covered", KillCounter.Instance.killCount);
+        if (KillCounter.Instance!= null)
+        {
+            statsRecorder.Add("Enemies/Enemies Killed", KillCounter.Instance.killCount);
+        }
+        statsRecorder.Add("Distance/Distance Covered", distanceCovered);
         EndEpisode();
     }
     public void LoseEpisode()
     {
         AddReward(-10f);
-        statsRecorder.Add("Enemies/Enemies Killed", KillCounter.Instance.killCount);
-        statsRecorder.Add("Distance/Distance Covered", KillCounter.Instance.killCount);
+        if (KillCounter.Instance!= null)
+        {
+            statsRecorder.Add("Enemies/Enemies Killed", KillCounter.Instance.killCount);
+        }
+        statsRecorder.Add("Distance/Distance Covered", distanceCovered);
         EndEpisode();
     }
     

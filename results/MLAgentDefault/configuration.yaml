@@ -34,7 +34,7 @@ behaviors:
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
-    init_path: results\MLAgentHard\playerMLAgent\checkpoint.pt
+    init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
     max_steps: 500000000
@@ -64,9 +64,9 @@ engine_settings:
 environment_parameters: null
 checkpoint_settings:
   run_id: MLAgentDefault
-  initialize_from: MLAgentHard
+  initialize_from: null
   load_model: false
-  resume: false
+  resume: true
   force: false
   train_model: false
   inference: false

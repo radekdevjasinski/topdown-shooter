@@ -2,58 +2,58 @@
     "playerMLAgent": {
         "checkpoints": [
             {
-                "steps": 1499963,
-                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-1499963.onnx",
-                "reward": 173.56667266289392,
-                "creation_time": 1732047416.086089,
+                "steps": 7499966,
+                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-7499966.onnx",
+                "reward": 80.3800048083067,
+                "creation_time": 1732073445.757678,
                 "auxillary_file_paths": [
-                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-1499963.pt"
+                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-7499966.pt"
                 ]
             },
             {
-                "steps": 1999995,
-                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-1999995.onnx",
-                "reward": 172.92000025510788,
-                "creation_time": 1732048877.84425,
+                "steps": 7999971,
+                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-7999971.onnx",
+                "reward": 328.6500026136637,
+                "creation_time": 1732074976.7745519,
                 "auxillary_file_paths": [
-                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-1999995.pt"
+                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-7999971.pt"
                 ]
             },
             {
-                "steps": 2499941,
-                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-2499941.onnx",
-                "reward": null,
-                "creation_time": 1732050413.314351,
+                "steps": 8499978,
+                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-8499978.onnx",
+                "reward": 206.4300030618906,
+                "creation_time": 1732076476.9090843,
                 "auxillary_file_paths": [
-                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-2499941.pt"
+                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-8499978.pt"
                 ]
             },
             {
-                "steps": 2999990,
-                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-2999990.onnx",
-                "reward": 232.23000112175941,
-                "creation_time": 1732051982.6072736,
+                "steps": 8999963,
+                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-8999963.onnx",
+                "reward": 339.6400012820959,
+                "creation_time": 1732078022.568721,
                 "auxillary_file_paths": [
-                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-2999990.pt"
+                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-8999963.pt"
                 ]
             },
             {
-                "steps": 3262363,
-                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-3262363.onnx",
-                "reward": 34.220002353191376,
-                "creation_time": 1732052798.1794758,
+                "steps": 9119358,
+                "file_path": "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-9119358.onnx",
+                "reward": 339.3000027537346,
+                "creation_time": 1732078411.4357011,
                 "auxillary_file_paths": [
-                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-3262363.pt"
+                    "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-9119358.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 3262363,
+            "steps": 9119358,
             "file_path": "results\\MLAgentDefault\\playerMLAgent.onnx",
-            "reward": 34.220002353191376,
-            "creation_time": 1732052798.1794758,
+            "reward": 339.3000027537346,
+            "creation_time": 1732078411.4357011,
             "auxillary_file_paths": [
-                "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-3262363.pt"
+                "results\\MLAgentDefault\\playerMLAgent\\playerMLAgent-9119358.pt"
             ]
         }
     },

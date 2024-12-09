@@ -10,7 +10,10 @@ public class SimpleDamageStrategy : MonoBehaviour, IDamageStrategy
         if (enemy.hp <= 0)
         {
             Destroy(enemy.gameObject);
-            KillCounter.Instance.AddKill();
+            if (KillCounter.Instance != null)
+            {
+                KillCounter.Instance.AddKill();
+            }
             GameController.Instance.AddExp(enemy.threatCost);
             if (PlayerMLAgent.instance != null)
             {

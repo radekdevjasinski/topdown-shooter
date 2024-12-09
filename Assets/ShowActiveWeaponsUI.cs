@@ -7,21 +7,28 @@ public class ShowActiveWeaponsUI : MonoBehaviour
     [SerializeField] GameObject[] weaponsUI;
     private void Update()
     {
-        UpdateActiveWeaponsUI();
+        if(weaponsUI!= null && weaponsUI.Length > 0) 
+        {
+            UpdateActiveWeaponsUI();
+        }  
     }
     public void UpdateActiveWeaponsUI()
     {
         foreach(GameObject weaponUI in weaponsUI)
         {
-            if (weaponUI.GetComponent<ArsenalDisplay>().weaponToDisplay.Level > 0)
+            if(weaponUI != null && weaponUI.GetComponent<ArsenalDisplay>()!= null)
             {
-                weaponUI.SetActive(true);
-            }
-            else
-            {
-                weaponUI.SetActive(false);
+                if (weaponUI.GetComponent<ArsenalDisplay>().weaponToDisplay.Level > 0)
+                {
+                    weaponUI.SetActive(true);
+                }
+                else
+                {
+                    weaponUI.SetActive(false);
 
+                }
             }
+            
         }
     }
     

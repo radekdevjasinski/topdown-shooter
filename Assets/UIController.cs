@@ -6,24 +6,50 @@ public class UIController : MonoBehaviour
 {
     public GameObject levelUpPanel;
     public GameObject displayPanel;
+    public GameObject pausePanel;
     public bool levelUpPanelOn;
+    public bool pauseOn;
     private float defaultTimeScale;
     private void Start()
     {
         defaultTimeScale = Time.timeScale;
+        levelUpPanel?.SetActive(false);
+        pausePanel?.SetActive(false);
     }
     public void ShowLevelUp()
     {
-        levelUpPanel.SetActive(true);
-        levelUpPanel.GetComponent<LevelUpScreen>().SetUpLevelScreen();
+        levelUpPanel?.SetActive(true);
+        levelUpPanel?.GetComponent<LevelUpScreen>().SetUpLevelScreen();
         Time.timeScale = 0;
         levelUpPanelOn = true;
     }
     public void HideLevelUp()
     {
-        levelUpPanel.SetActive(false);
         Time.timeScale = defaultTimeScale;
         levelUpPanelOn = false;
-        displayPanel.GetComponent<ShowActiveWeaponsUI>().UpdateActiveWeaponsUI();
+        levelUpPanel?.SetActive(false);
+        displayPanel?.GetComponent<ShowActiveWeaponsUI>().UpdateActiveWeaponsUI();
+    }
+    public void OnPause()
+    {
+        if(levelUpPanelOn)
+        {
+            return;
+        }
+        if(pauseOn)
+        {
+            pausePanel?.SetActive(false);
+            Time.timeScale = 1;
+            pauseOn = false;
+        }
+        else
+        {
+            pausePanel?.SetActive(true);
+            Time.timeScale = 0;
+            pauseOn = true;
+        }
+        
+       
+        
     }
 }

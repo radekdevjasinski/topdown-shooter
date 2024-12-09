@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class FollowPlayer : MonoBehaviour
 {
+    public Vector3 shift;  // Przesunięcie względem gracza;
     void Update()
     {
-        transform.position = Player.Instance.transform.position - new Vector3(0,0,5);
+        transform.position = Player.Instance.transform.position - shift;
     }
 }

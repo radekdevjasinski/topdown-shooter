@@ -1,0 +1,65 @@
+{
+    "playerMLAgent": {
+        "checkpoints": [
+            {
+                "steps": 3999993,
+                "file_path": "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-3999993.onnx",
+                "reward": 210.62000169356665,
+                "creation_time": 1733771416.7114081,
+                "auxillary_file_paths": [
+                    "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-3999993.pt"
+                ]
+            },
+            {
+                "steps": 4499937,
+                "file_path": "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-4499937.onnx",
+                "reward": null,
+                "creation_time": 1733772919.5363886,
+                "auxillary_file_paths": [
+                    "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-4499937.pt"
+                ]
+            },
+            {
+                "steps": 4999968,
+                "file_path": "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-4999968.onnx",
+                "reward": null,
+                "creation_time": 1733774315.1885016,
+                "auxillary_file_paths": [
+                    "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-4999968.pt"
+                ]
+            },
+            {
+                "steps": 5499959,
+                "file_path": "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-5499959.onnx",
+                "reward": 273.69333625833195,
+                "creation_time": 1733775675.488503,
+                "auxillary_file_paths": [
+                    "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-5499959.pt"
+                ]
+            },
+            {
+                "steps": 5832854,
+                "file_path": "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-5832854.onnx",
+                "reward": null,
+                "creation_time": 1733776591.9755023,
+                "auxillary_file_paths": [
+                    "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-5832854.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 5832854,
+            "file_path": "results\\MLAgentDefault3\\playerMLAgent.onnx",
+            "reward": null,
+            "creation_time": 1733776591.9755023,
+            "auxillary_file_paths": [
+                "results\\MLAgentDefault3\\playerMLAgent\\playerMLAgent-5832854.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.5.1+cpu"
+    }
+}

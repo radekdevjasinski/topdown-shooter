@@ -1,0 +1,56 @@
+{
+    "playerMLAgent": {
+        "checkpoints": [
+            {
+                "steps": 499968,
+                "file_path": "results\\MLAgentDefault2\\playerMLAgent\\playerMLAgent-499968.onnx",
+                "reward": 279.7600112259388,
+                "creation_time": 1732153556.8521717,
+                "auxillary_file_paths": [
+                    "results\\MLAgentDefault2\\playerMLAgent\\playerMLAgent-499968.pt"
+                ]
+            },
+            {
+                "steps": 999987,
+                "file_path": "results\\MLAgentDefault2\\playerMLAgent\\playerMLAgent-999987.onnx",
+                "reward": 282.46000342071056,
+                "creation_time": 1732155340.0210228,
+                "auxillary_file_paths": [
+                    "results\\MLAgentDefault2\\playerMLAgent\\playerMLAgent-999987.pt"
+                ]
+            },
+            {
+                "steps": 1499964,
+                "file_path": "results\\MLAgentDefault2\\playerMLAgent\\playerMLAgent-1499964.onnx",
+                "reward": null,
+                "creation_time": 1732156904.0207288,
+                "auxillary_file_paths": [
+                    "results\\MLAgentDefault2\\playerMLAgent\\playerMLAgent-1499964.pt"
+                ]
+            },
+            {
+                "steps": 1501849,
+                "file_path": "results\\MLAgentDefault2\\playerMLAgent\\playerMLAgent-1501849.onnx",
+                "reward": 295.6200045347214,
+                "creation_time": 1732156911.6549175,
+                "auxillary_file_paths": [
+                    "results\\MLAgentDefault2\\playerMLAgent\\playerMLAgent-1501849.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1501849,
+            "file_path": "results\\MLAgentDefault2\\playerMLAgent.onnx",
+            "reward": 295.6200045347214,
+            "creation_time": 1732156911.6549175,
+            "auxillary_file_paths": [
+                "results\\MLAgentDefault2\\playerMLAgent\\playerMLAgent-1501849.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.5.1+cpu"
+    }
+}
