@@ -6,6 +6,10 @@ using UnityEngine;
 public class SpawnEnemies : MonoBehaviour
 {
     [SerializeField]
+    private Player player;
+    [SerializeField]
+    private GameController game;
+    [SerializeField]
     private GameObject[] enemyPrefab;
     private List<GameObject> enemies;
 
@@ -16,7 +20,7 @@ public class SpawnEnemies : MonoBehaviour
     [SerializeField]
     private float maxEnemiesCount = 20;
 
-    private Camera mainCamera;
+    [SerializeField] private Camera mainCamera;
 
     [SerializeField]
     private float removeDistance = 20f;
@@ -34,7 +38,6 @@ public class SpawnEnemies : MonoBehaviour
             return threatB.CompareTo(threatA);
         });
         
-        mainCamera = Camera.main;
         StartCoroutine(SpawnEnemiesPeriodically());
         StartCoroutine(RemoveDistantEnemiesPeriodically());
 
@@ -50,19 +53,19 @@ public class SpawnEnemies : MonoBehaviour
         }
         if (children.Count < maxEnemiesCount)
         {
-            // Uzyskaj œrodek kamery
+            // Uzyskaj ï¿½rodek kamery
             Vector3 cameraPosition = mainCamera.transform.position;
 
-            // Wybierz losowy k¹t w radianach
+            // Wybierz losowy kï¿½t w radianach
             float angle = Random.Range(0f, 2f * Mathf.PI);
 
-            // Oblicz pozycjê na okrêgu
+            // Oblicz pozycjï¿½ na okrï¿½gu
             Vector3 spawnPosition = new Vector3(
                 cameraPosition.x + Mathf.Cos(angle) * spawnDistance,
                 cameraPosition.y + Mathf.Sin(angle) * spawnDistance,
                 0);
 
-            // Stwórz przeciwnika na wybranej pozycji
+            // Stwï¿½rz przeciwnika na wybranej pozycji
             SpawnEnemy(spawnPosition, ChooseEnemy());
         }
     }
@@ -72,7 +75,7 @@ public class SpawnEnemies : MonoBehaviour
         float highestThreatCost = 0;
         foreach (GameObject enemy in enemies)
         {
-            if (GameController.Instance.ThreatCheck(enemy.GetComponent<Enemy>().threatCost))
+            if (game.ThreatCheck(enemy.GetComponent<Enemy>().threatCost))
             {
                 if (enemy.GetComponent<Enemy>().threatCost >= highestThreatCost)
                 {
@@ -100,8 +103,11 @@ public class SpawnEnemies : MonoBehaviour
     {
         if (enemyPrefab != null)
         {
-            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
-            GameController.Instance.Threat -= enemyPrefab.GetComponent<Enemy>().threatCost;
+            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
+            Enemy enemyClass = enemy.GetComponent<Enemy>();
+            enemyClass.playerRef = player.gameObject;
+            enemyClass.gameRef = game;
+            game.Threat -= enemyPrefab.GetComponent<Enemy>().threatCost;
         }
     }
     IEnumerator SpawnEnemiesPeriodically()
@@ -117,21 +123,21 @@ public class SpawnEnemies : MonoBehaviour
         List<GameObject> enemies = new List<GameObject>();
         List<GameObject> children = new List<GameObject>();
 
-        // Dodajemy wszystkich przeciwników do listy
+        // Dodajemy wszystkich przeciwnikï¿½w do listy
         foreach (Transform child in this.transform)
         {
             children.Add(child.gameObject);
         }
 
-        // Sortujemy przeciwników wed³ug odleg³oœci od gracza
+        // Sortujemy przeciwnikï¿½w wedï¿½ug odlegï¿½oï¿½ci od gracza
         children.Sort((enemy1, enemy2) =>
         {
-            float distance1 = Vector3.Distance(Player.Instance.gameObject.transform.position, enemy1.transform.position);
-            float distance2 = Vector3.Distance(Player.Instance.gameObject.transform.position, enemy2.transform.position);
+            float distance1 = Vector3.Distance(player.gameObject.transform.position, enemy1.transform.position);
+            float distance2 = Vector3.Distance(player.gameObject.transform.position, enemy2.transform.position);
             return distance1.CompareTo(distance2);
         });
 
-        // Dodajemy najbli¿szych przeciwników do listy
+        // Dodajemy najbliï¿½szych przeciwnikï¿½w do listy
         for (int i = 0; i < Mathf.Min(count, children.Count); i++)
         {
             enemies.Add(children[i]);
@@ -174,7 +180,7 @@ public class SpawnEnemies : MonoBehaviour
 
         foreach (GameObject enemy in children)
         {
-            float distance = Vector3.Distance(Player.Instance.gameObject.transform.position, enemy.transform.position);
+            float distance = Vector3.Distance(player.gameObject.transform.position, enemy.transform.position);
             if (distance > removeDistance)
             {
                 Destroy(enemy);

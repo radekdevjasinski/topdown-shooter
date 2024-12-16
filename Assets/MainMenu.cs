@@ -11,7 +11,6 @@ public class MainMenu : MonoBehaviour
     public GameObject cpuButton;
     public GameObject vsCpuButton;
     public GameObject quitButton;
-    public GameObject mainMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +22,7 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("game");
     }
     public void CpuButtonClicked(){
-        SceneManager.LoadScene("mlagents default env");
+        SceneManager.LoadScene("cpu");
     }
     public void VsCpuButtonClicked(){
         //SceneManager.LoadScene("vs_cpu");

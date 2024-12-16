@@ -7,6 +7,7 @@ public class UIController : MonoBehaviour
     public GameObject levelUpPanel;
     public GameObject displayPanel;
     public GameObject pausePanel;
+    public GameObject killCounter;
     public bool levelUpPanelOn;
     public bool pauseOn;
     private float defaultTimeScale;

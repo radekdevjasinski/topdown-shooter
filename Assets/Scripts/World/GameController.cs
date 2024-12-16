@@ -14,14 +14,18 @@ public class GameController : MonoBehaviour
     [SerializeField] private float expToNextLevel;
 
     [Header("Pointers")]
+    [SerializeField] private Player player;
+    [SerializeField] private PlayerMLAgent mLAgent;
+    [SerializeField] private KillCounter killCounter;
+    [SerializeField] private ExpSlider expSlider;
     [SerializeField] private SpawnEnemies enemySpawner;
     [SerializeField] private ArsenalController arsenalController;
+
 
     private float threatSpikeTimer = 0;
     private static float spikeChangeTime = 30;
     private UIController uIController;
 
-    public static GameController Instance;
     public float Threat
     {
         get => threatValue;
@@ -36,17 +40,6 @@ public class GameController : MonoBehaviour
     {
         get => expToNextLevel;
         set => expToNextLevel = value;
-    }
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject.GetComponent<GameController>());
-        }
-        else
-        {
-            Instance = this;
-        }
     }
     private void Start()
     {
@@ -80,13 +73,25 @@ public class GameController : MonoBehaviour
     public void AddExp(float value)
     {
         experience += value;
-        if(ExpSlider.Instance != null)
+        if(expSlider != null)
         {
-            ExpSlider.Instance.UpdateExpSlider();
+            expSlider.UpdateExpSlider();
         }
         if (experience >= expToNextLevel)
         {
             LevelUp();
+        }
+    }
+    public void AddKill(float value)
+    {
+        if (killCounter != null)
+        {
+            killCounter.AddKill();
+        }
+        AddExp(value);
+        if (mLAgent != null)
+        {
+            mLAgent.AddReward(value);
         }
     }
     void LevelUp()
@@ -95,9 +100,9 @@ public class GameController : MonoBehaviour
         level++;
         expToNextLevel = LevelingFunction();
         uIController.ShowLevelUp();
-        if (ExpSlider.Instance != null)
+        if (expSlider != null)
         {
-            ExpSlider.Instance.UpdateExpSlider();
+            expSlider.UpdateExpSlider();
         }
 
     }
@@ -107,12 +112,12 @@ public class GameController : MonoBehaviour
     }
     public void ResetGame()
     {
-        Player.Instance.ResetPlayer();
+        player.ResetPlayer();
         enemySpawner.ClearAllEnemies();
         arsenalController.ResetArsenal();
-        if(KillCounter.Instance != null)
+        if(killCounter != null)
         {
-            KillCounter.Instance.ResetCounter();
+            killCounter.ResetCounter();
         }
         threatValue = 0;
         threatSpeed = 0.3f;

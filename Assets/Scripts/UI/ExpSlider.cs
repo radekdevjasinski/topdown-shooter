@@ -6,27 +6,17 @@ using UnityEngine.UI;
 public class ExpSlider : MonoBehaviour
 {
     private Slider slider;
-    public static ExpSlider Instance;
-    private void Awake()
-    {
-        if (Instance!=null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
+    [SerializeField] private GameController game;
+
     void Start()
     {
         slider = GetComponent<Slider>();
-        slider.value = GameController.Instance.Experience;
-        slider.maxValue = GameController.Instance.ExpToNextLevel;
+        slider.value = game.Experience;
+        slider.maxValue = game.ExpToNextLevel;
     }
     public void UpdateExpSlider()
     {
-        slider.value = GameController.Instance.Experience;
-        slider.maxValue = GameController.Instance.ExpToNextLevel;
+        slider.value = game.Experience;
+        slider.maxValue = game.ExpToNextLevel;
     }
 }

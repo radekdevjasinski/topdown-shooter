@@ -19,7 +19,7 @@ public class LevelUpScreen : MonoBehaviour
     public void SetUpLevelScreen()
     {
         ClearCards();
-        List<WeaponLevel> possibleUpgrades = ArsenalController.instance.PossibleUpgrades();
+        List<WeaponLevel> possibleUpgrades = arsenalController.PossibleUpgrades();
         if (possibleUpgrades != null)
         {
             int cards = 0;
@@ -62,7 +62,7 @@ public class LevelUpScreen : MonoBehaviour
             button.onClick.AddListener(() => arsenalController.UpgradeWeaponWithId(weaponLevel.weaponId, weaponLevel));
             button.onClick.AddListener(() => uIController.HideLevelUp());
             SaveCardsToChoose(weaponLevel);
-
+            button.Select();
         }
     }
 

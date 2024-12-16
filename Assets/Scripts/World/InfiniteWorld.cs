@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class InfiniteWorld : MonoBehaviour
 {
+    [SerializeField] private Player player;
     private GameObject chunkPrefab; //Prefab sektora
     private int gridSizeX; //rozmiary sektora
     private int gridSizeY; 
@@ -13,7 +14,7 @@ public class InfiniteWorld : MonoBehaviour
 
     void Start()
     {
-        lastPlayerPosition = Player.Instance.gameObject.transform.position;
+        lastPlayerPosition = player.gameObject.transform.position;
         chunkPrefab = gameObject.transform.GetChild(0).gameObject;
         gridSizeX = Mathf.CeilToInt(chunkPrefab.GetComponent<TilemapRenderer>().bounds.size.x);
         gridSizeY = Mathf.CeilToInt(chunkPrefab.GetComponent<TilemapRenderer>().bounds.size.y);
@@ -22,7 +23,7 @@ public class InfiniteWorld : MonoBehaviour
 
     void Update()
     {
-        Vector3 playerPosition = Player.Instance.gameObject.transform.position;
+        Vector3 playerPosition = player.gameObject.transform.position;
 
         if (Mathf.Abs(lastPlayerPosition.x - playerPosition.x) > gridSizeX ||
             Mathf.Abs(lastPlayerPosition.y - playerPosition.y) > gridSizeY)
@@ -36,8 +37,8 @@ public class InfiniteWorld : MonoBehaviour
     {
         // Sprawdź na którym sektorze jest gracz
         Vector2Int playerGridPosition = 
-            new Vector2Int(Mathf.RoundToInt(Player.Instance.gameObject.transform.position.x / gridSizeX), 
-            Mathf.RoundToInt(Player.Instance.gameObject.transform.position.y / gridSizeY));
+            new Vector2Int(Mathf.RoundToInt(player.gameObject.transform.position.x / gridSizeX), 
+            Mathf.RoundToInt(player.gameObject.transform.position.y / gridSizeY));
 
         // Sprawdź sąsiednie sektory w promieniu 1 jednostki gridu
         for (int x = -1; x <= 1; x++)
@@ -45,7 +46,7 @@ public class InfiniteWorld : MonoBehaviour
             for (int y = -1; y <= 1; y++)
             {
                 Vector2Int gridPos = new Vector2Int(playerGridPosition.x + x, playerGridPosition.y + y);
-                float distance = Vector2.Distance(Player.Instance.gameObject.transform.position, new Vector2(gridPos.x * gridSizeX, gridPos.y * gridSizeY));
+                float distance = Vector2.Distance(player.gameObject.transform.position, new Vector2(gridPos.x * gridSizeX, gridPos.y * gridSizeY));
 
                 // Generuj sektor, jeśli nie istnieje
                 if (!activeChunks.ContainsKey(gridPos))

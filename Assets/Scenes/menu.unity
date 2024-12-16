@@ -450,7 +450,6 @@ GameObject:
   m_Component:
   - component: {fileID: 236433835}
   - component: {fileID: 236433834}
-  - component: {fileID: 236433833}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -458,21 +457,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &236433833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236433832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a48524ac89982e044857a594d7cbfd3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelUpPanel: {fileID: 2006483887}
-  displayPanel: {fileID: 0}
-  levelUpPanelOn: 0
 --- !u!114 &236433834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +474,10 @@ MonoBehaviour:
   level: 0
   experience: 0
   expToNextLevel: 0
+  player: {fileID: 544991853}
+  mLAgent: {fileID: 980884391}
+  killCounter: {fileID: 0}
+  expSlider: {fileID: 0}
   enemySpawner: {fileID: 1569259161}
   arsenalController: {fileID: 1041010606}
 --- !u!4 &236433835
@@ -558,6 +546,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9be24234232683b4096c25d1bc4c3424, type: 2}
   - {fileID: 11400000, guid: 88461afecf9e5514680b65accf651afb, type: 2}
   - {fileID: 11400000, guid: d4ce2b6e1af823f4885e3c50e6fb46e9, type: 2}
+  playerRef: {fileID: 544991853}
   SwordCooldown: 3
   SlashSpeed: 100
   SwordDamage: 1
@@ -856,7 +845,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -50}
+  m_LocalPosition: {x: -4, y: 0.5, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -874,7 +863,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01d6900ef0219514595797515ce1145c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shift: {x: 4, y: -0.5, z: 5}
+  player: {fileID: 544991853}
+  shift: {x: 4, y: -0.5, z: 50}
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1061,6 +1051,9 @@ MonoBehaviour:
   defaultSpeed: 100
   speed: 100
   speedChangeRate: 0.5
+  enemiesSpawner: {fileID: 1569259161}
+  mLAgent: {fileID: 980884391}
+  game: {fileID: 236433834}
 --- !u!114 &544991854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1342,7 +1335,7 @@ MonoBehaviour:
   playButton: {fileID: 5791969}
   cpuButton: {fileID: 2125501114}
   vsCpuButton: {fileID: 1548377477}
-  quitButton: {fileID: 0}
+  quitButton: {fileID: 427488210}
 --- !u!1 &711665870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1708,6 +1701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b00c08801487a2742a40f33a7e9a4b70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 544991853}
 --- !u!156049354 &930171309
 Grid:
   m_ObjectHideFlags: 0
@@ -1805,14 +1799,16 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 20000
   movementInput: {x: 0, y: 0}
-  uIController: {fileID: 236433833}
-  enemySpawner: {fileID: 1569259161}
+  player: {fileID: 544991853}
+  game: {fileID: 236433834}
+  uIController: {fileID: 0}
   levelUpSceen: {fileID: 2006483889}
   arsenalController: {fileID: 1041010606}
   raySensorEnemies: {fileID: 1784320289}
   panelMLAgent: {fileID: 2101801426}
   panelObserwations: {fileID: 1436649817}
   panelActions: {fileID: 1898646450}
+  killCounter: {fileID: 0}
   textPrefab: {fileID: 3480327727602036673, guid: e029bb1c048c353458b88b05abcd3dbc, type: 3}
   iter: 0
 --- !u!114 &980884392
@@ -1926,6 +1922,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a2844671aabe90f4b89111d22d318b13, type: 2}
   - {fileID: 11400000, guid: 76dd41b54e110734db0fe5ade1037e4d, type: 2}
   - {fileID: 11400000, guid: cd15d4b8586a5f848b1541b0f05dbb7e, type: 2}
+  playerRef: {fileID: 544991853}
   GunCooldown: 5
   DetectionRadius: 5
   BulletSpeed: 500
@@ -1959,6 +1956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c93f9789ed28dd41beac75de3eebce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 544991853}
   weapons: []
   gunGM: {fileID: 1017393561}
   swordGM: {fileID: 357705645}
@@ -3298,6 +3296,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34a3c973d69dad34994eeba96e3ee070, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 544991853}
+  game: {fileID: 236433834}
   enemyPrefab:
   - {fileID: 7280718620659616017, guid: 3f4a10be3d2aeb247a2dc2977e8b1a14, type: 3}
   - {fileID: 7280718620659616017, guid: 33322a5346c06c744aab09b7d45da09b, type: 3}
@@ -3360,6 +3360,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7dc98e9768c9b244e8e9075b9a375b48, type: 2}
   - {fileID: 11400000, guid: 96fb34b62a2d9084ab26bc24a63259e3, type: 2}
   - {fileID: 11400000, guid: 3e20ee667bfbb674e905d1c83c4c95f2, type: 2}
+  playerRef: {fileID: 544991853}
   explosionRadius: 3
   barrelDuration: 60
   barrelDamage: 5
@@ -3417,6 +3418,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a1d31f443870894b8466ade4bf4c2c3, type: 2}
   - {fileID: 11400000, guid: 7dbd0a0f7f98c9a49a975c3655348fba, type: 2}
   - {fileID: 11400000, guid: 01332a1a6cf5f2c499e48235e6fd115d, type: 2}
+  playerRef: {fileID: 544991853}
   OrangeCooldown: 15
   OrangeEatingTime: 2
   heal: 0.5
@@ -4072,7 +4074,7 @@ MonoBehaviour:
   options: {fileID: 2049248144}
   cardPrefab: {fileID: 3491913271326454204, guid: 5a573ea7dc2c0e84ea0d694c74fab717, type: 3}
   arsenalController: {fileID: 1041010606}
-  uIController: {fileID: 236433833}
+  uIController: {fileID: 0}
   activeCards:
   - {fileID: 0}
   - {fileID: 0}

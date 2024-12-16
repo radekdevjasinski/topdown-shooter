@@ -24,18 +24,19 @@ public class Barrel : WeaponBase
 
     private Vector3 GetRandomPositionAroundPlayer()
     {
-        // Generowanie losowej pozycji wokó³ gracza w zadanym promieniu
+        // Generowanie losowej pozycji wokï¿½ gracza w zadanym promieniu
         float angle = Random.Range(0f, Mathf.PI * 2);
         float x = Mathf.Cos(angle) * (spawnRadius + Random.Range(-1f,1f));
         float y = Mathf.Sin(angle) * (spawnRadius + Random.Range(-1f, 1f));
 
 
-        return new Vector3( Player.Instance.transform.position.x + x,  Player.Instance.transform.position.y + y,  Player.Instance.transform.position.z);
+        return new Vector3( playerRef.transform.position.x + x,  playerRef.transform.position.y + y,  playerRef.transform.position.z);
     }
     protected override void Execute()
     {
         Vector3 spawnPosition = GetRandomPositionAroundPlayer();
         GameObject barrel = Instantiate(barrelPrefab, spawnPosition, Quaternion.identity);
+        barrel.GetComponent<BarrelObject>().barrel = this;
         Destroy(barrel, barrelDuration);
     }
     public override void UpgradeToNextLevel(WeaponLevel weaponLevel)

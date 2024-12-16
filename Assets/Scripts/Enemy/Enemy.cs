@@ -16,14 +16,15 @@ public abstract class Enemy : MonoBehaviour
 
     private float flashDuriaton = 0.2f;
 
-    protected GameObject playerRef;
+    [SerializeField] public GameObject playerRef;
+    [SerializeField] public GameController gameRef;
+
     protected new Rigidbody2D rigidbody;
     protected SpriteRenderer sprite;
     protected Slider slider;
 
     protected virtual void Start()
     {
-        playerRef = Player.Instance.gameObject;
         rigidbody = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         slider = GetComponentInChildren<Slider>();

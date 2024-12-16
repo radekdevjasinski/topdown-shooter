@@ -6,15 +6,13 @@ using UnityEngine.UI;
 public class BarrelObject : MonoBehaviour
 {
     public float duration;
-    private Barrel barrel;
+    public Barrel barrel;
     private GameObject explosionPrefab;
     private GameObject gunPowderLine;
     private Slider slider;
     private bool alreadyBoomed;
     void Start()
     {
-
-        barrel = GameObject.Find("Barrel").GetComponent<Barrel>();
         explosionPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Barrel Explosion");
         gunPowderLine = Resources.Load<GameObject>("Prefabs/Weapons/Gunpowder Line");
         duration = barrel.barrelDuration;

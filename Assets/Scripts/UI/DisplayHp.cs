@@ -5,20 +5,22 @@ using UnityEngine.UI;
 
 public class DisplayHp : MonoBehaviour
 {
+    [SerializeField] private Player player;
+    [SerializeField] private Image headRef;
     private Slider slider;
     private Image headImage;
     void Start()
     {
         slider = GetComponentInChildren<Slider>();
-        headImage = GameObject.Find("Head").GetComponent<Image>();
+        headImage = headRef.GetComponent<Image>();
 
-        slider.maxValue = Player.Instance.DefaultHp;
+        slider.maxValue = player.DefaultHp;
         slider.minValue = 0;
     }
     void Update()
     {
-        float maxHp = Player.Instance.DefaultHp;
-        float hp = Player.Instance.Hp;
+        float maxHp = player.DefaultHp;
+        float hp = player.Hp;
 
         slider.value = maxHp - (maxHp - hp);
         if (hp <= (maxHp / 2))

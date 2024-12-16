@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class FollowPlayer : MonoBehaviour
 {
+    [SerializeField] private Player player;
     public Vector3 shift;  // Przesunięcie względem gracza;
     void Update()
     {
-        transform.position = Player.Instance.transform.position - shift;
+        transform.position = player.transform.position - shift;
     }
 }

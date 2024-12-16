@@ -7,19 +7,21 @@ public class PlayerMovement : MonoBehaviour
 {
     private new Rigidbody2D rigidbody;
     private Animator animator;
+    private Player player;
     public Vector2 movementInput;
 
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        //gracz zwrócony w lewo
+        player = GetComponent<Player>();
+        //gracz zwrï¿½cony w lewo
         animator.SetFloat("WasFacing", -1);
     }
 
     void FixedUpdate()
     {
-        rigidbody.velocity = movementInput * Player.Instance.Speed * Time.fixedDeltaTime;
+        rigidbody.velocity = movementInput * player.Speed * Time.fixedDeltaTime;
         animator.SetFloat("Horizontal", movementInput.x);
         animator.SetFloat("Speed", movementInput.sqrMagnitude);
         if (movementInput.x != 0)

@@ -16,11 +16,11 @@ public class PlayerMLAgent : Agent
     private Vector2 movement;
     public Vector2 movementInput;
 
+    [SerializeField] private Player player;
+    [SerializeField] private GameController game;
     [SerializeField] private UIController uIController;
-    [SerializeField] private SpawnEnemies enemySpawner;
     [SerializeField] private LevelUpScreen levelUpSceen;
     [SerializeField] private ArsenalController arsenalController;
-    public static PlayerMLAgent instance;
 
     [SerializeField] private RayPerceptionSensorComponent2D raySensorEnemies;
     
@@ -28,6 +28,7 @@ public class PlayerMLAgent : Agent
     [SerializeField] private GameObject panelMLAgent;
     [SerializeField] private GameObject panelObserwations;
     [SerializeField] private GameObject panelActions;
+    [SerializeField] private KillCounter killCounter;
 
     [Header("Stats")]
     [SerializeField] private GameObject textPrefab;
@@ -38,33 +39,22 @@ public class PlayerMLAgent : Agent
 
 
     public int iter = 0;
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
-    }
     void Start()
     {
-        rigidbody = Player.Instance.GetComponent<Rigidbody2D>();
-        animator = Player.Instance.GetComponent<Animator>();
-        speed = Player.Instance.Speed;
+        rigidbody = player.GetComponent<Rigidbody2D>();
+        animator = player.GetComponent<Animator>();
+        speed = player.Speed;
         //gracz zwr�cony w lewo
         animator.SetFloat("WasFacing", -1);
-        Player.Instance.GetComponent<PlayerMovement>().enabled = false;
-        Player.Instance.GetComponent<PlayerInput>().enabled = false;
+        player.GetComponent<PlayerMovement>().enabled = false;
+        player.GetComponent<PlayerInput>().enabled = false;
 
         statsRecorder = Academy.Instance.StatsRecorder;
 
     }
     public override void OnEpisodeBegin()
     {
-        GameController.Instance.ResetGame();
+        game.ResetGame();
         distanceCovered = 0;
         iter++;
         ConsoleText(panelMLAgent, "iteration", iter.ToString());
@@ -76,7 +66,7 @@ public class PlayerMLAgent : Agent
         ConsoleText(panelMLAgent, "reward", GetCumulativeReward().ToString("F2"));
         
         // pozycja gracza vector2
-        Vector2 playerPos = Player.Instance.transform.position;
+        Vector2 playerPos = player.transform.position;
         sensor.AddObservation(playerPos);
         ConsoleText(panelObserwations, "pos", playerPos.x.ToString("F2") + ", " + playerPos.y.ToString("F2"));
 
@@ -90,8 +80,8 @@ public class PlayerMLAgent : Agent
         //ConsoleText(panelObserwations, "player-side", PlayerSide().ToString());
 
         // ilosc zycia
-        //sensor.AddObservation(Player.Instance.Hp);
-        //ConsoleText(panelObserwations, "health", Player.Instance.Hp.ToString("F2"));
+        //sensor.AddObservation(player.Hp);
+        //ConsoleText(panelObserwations, "health", player.Hp.ToString("F2"));
 
     }
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -130,13 +120,13 @@ public class PlayerMLAgent : Agent
         ConsoleText(panelActions, "move", movement.x.ToString("F2") + ", " + movement.y.ToString("F2"));
 
         // Oblicz przemieszczenie od ostatniej pozycji
-        Vector2 currentPosition = Player.Instance.transform.position;
+        Vector2 currentPosition = player.transform.position;
         distanceCovered += Vector2.Distance(lastPosition, currentPosition);
         lastPosition = currentPosition;
         ConsoleText(panelMLAgent, "distance", distanceCovered.ToString("F2"));
-        if(KillCounter.Instance != null)
+        if(killCounter != null)
         {
-            ConsoleText(panelMLAgent, "killed", KillCounter.Instance.killCount.ToString());
+            ConsoleText(panelMLAgent, "killed", killCounter.killCount.ToString());
         }
 
     }
@@ -162,9 +152,13 @@ public class PlayerMLAgent : Agent
     }
     public void ResetEpisode()
     {
-        if (KillCounter.Instance!= null)
+        if (gameObject.activeSelf == false)
         {
-            statsRecorder.Add("Enemies/Enemies Killed", KillCounter.Instance.killCount);
+            return;
+        }
+        if (killCounter!= null)
+        {
+            statsRecorder.Add("Enemies/Enemies Killed", killCounter.killCount);
         }
         statsRecorder.Add("Distance/Distance Covered", distanceCovered);
         EndEpisode();
@@ -172,9 +166,9 @@ public class PlayerMLAgent : Agent
     public void LoseEpisode()
     {
         AddReward(-10f);
-        if (KillCounter.Instance!= null)
+        if (killCounter!= null)
         {
-            statsRecorder.Add("Enemies/Enemies Killed", KillCounter.Instance.killCount);
+            statsRecorder.Add("Enemies/Enemies Killed", killCounter.killCount);
         }
         statsRecorder.Add("Distance/Distance Covered", distanceCovered);
         EndEpisode();
@@ -182,6 +176,7 @@ public class PlayerMLAgent : Agent
     
     void RandomUpgrades()
     {
+        if (uIController == null) {return;}
         if (uIController.levelUpPanelOn)
         {
             WeaponLevel selectedUpgrade = levelUpSceen.activeCards[Random.Range(0, levelUpSceen.activeCards.Length)];

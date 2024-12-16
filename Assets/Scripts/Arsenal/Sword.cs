@@ -19,8 +19,8 @@ public class Sword : WeaponBase
         defaultDamage = SwordDamage;
         slashPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Slash");
 
-        playerAnimator = Player.Instance.gameObject.GetComponent<Animator>();
-        playerRigidbody2D = Player.Instance.gameObject.GetComponent<Rigidbody2D>();
+        playerAnimator = playerRef.gameObject.GetComponent<Animator>();
+        playerRigidbody2D = playerRef.gameObject.GetComponent<Rigidbody2D>();
         
         base.Start();
     }

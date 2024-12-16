@@ -9,6 +9,7 @@ TagManager:
   - Water
   - Object
   - Barrel
+  - CPUPlayer
   layers:
   - Default
   - TransparentFX

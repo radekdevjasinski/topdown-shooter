@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/mlagents hard env.unity
-    guid: f7d9e222ed5458b43997979845d6db3f
   - enabled: 1
     path: Assets/Scenes/menu.unity
     guid: 8cb618999157fa24a85ae681fc829cdc
@@ -15,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/game.unity
     guid: 0972f88b9a66fd74e91ee16d9924e491
   - enabled: 1
-    path: Assets/Scenes/mlagents default env.unity
-    guid: 6b663fa079be5bd488725c386932295e
+    path: Assets/Scenes/cpu.unity
+    guid: 10e8f386a7ac74d48af56ef1584762bf
   m_configObjects: {}

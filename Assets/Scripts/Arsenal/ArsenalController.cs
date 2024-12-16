@@ -6,29 +6,16 @@ using UnityEngine;
 
 public class ArsenalController : MonoBehaviour
 {
+    [SerializeField] private Player player;
     public List<WeaponBase> weapons = new();
     public GameObject gunGM;
     public GameObject swordGM;
     public GameObject Rotatable;
-
-    public static ArsenalController instance;
-
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
-    }
-
+    
     private Animator playerAnimator;
     void Start()
     {
-        playerAnimator = Player.Instance.GetComponent<Animator>();
+        playerAnimator = player.GetComponent<Animator>();
         weapons = GetComponentsInChildren<WeaponBase>().ToList();
     }
     void Update()

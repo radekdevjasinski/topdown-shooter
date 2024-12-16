@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    //publiczna instancja singletona
-    public static Player Instance { get; private set; }
     [Header("Health Points")]
     [SerializeField] private float defaultHp;
     [SerializeField] private float hp;
@@ -16,7 +14,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float speedChangeRate = 0.1f;
     
-    private SpawnEnemies enemiesSpawner;
+    [Header("Pointers")]
+    [SerializeField] private SpawnEnemies enemiesSpawner;
+    [SerializeField] private PlayerMLAgent mLAgent;
+    [SerializeField] private GameController game;
 
     //gettery i settery
     public float Hp
@@ -34,22 +35,6 @@ public class Player : MonoBehaviour
     {
         get => defaultHp;
     }
-
-    void Awake()
-    {
-        //stworzenie instancji
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        //usuniecie kopii
-        else
-        {
-            Destroy(gameObject);
-        }
-
-        enemiesSpawner = GameObject.Find("EnemiesSpawner").GetComponent<SpawnEnemies>();
-    }
     public void ChangeHp(float amount)
     {
         hp += amount;
@@ -59,20 +44,20 @@ public class Player : MonoBehaviour
         }
         hp = Mathf.Clamp(hp, 0, defaultHp);
 
-        if (PlayerMLAgent.instance!= null && amount < 0)    
+        if (mLAgent!= null && amount < 0)    
         {
-            PlayerMLAgent.instance.AddReward(amount * 10);
+            mLAgent.AddReward(amount * 10);
         }
     }
     public void Die()
     {
-        if (PlayerMLAgent.instance != null)
+        if (mLAgent != null && mLAgent.gameObject.activeSelf)
         {
-            PlayerMLAgent.instance.ResetEpisode();
+            mLAgent.ResetEpisode();
         }
         else
         {
-            GameController.Instance.ResetGame();
+            game.ResetGame();
         }
         
 
