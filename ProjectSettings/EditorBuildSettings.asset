@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/cpu.unity
     guid: 10e8f386a7ac74d48af56ef1584762bf
+  - enabled: 1
+    path: Assets/Scenes/vs_cpu.unity
+    guid: 48ac2c15425fa8148b0b6c6959ecb760
+  - enabled: 1
+    path: Assets/Scenes/cpu_pov.unity
+    guid: 08046146110dca0459869936da31103b
   m_configObjects: {}

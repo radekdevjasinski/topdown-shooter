@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("cpu");
     }
     public void VsCpuButtonClicked(){
-        //SceneManager.LoadScene("vs_cpu");
+        SceneManager.LoadScene("vs_cpu");
     }
     public void QuitButtonClicked(){
         Application.Quit();

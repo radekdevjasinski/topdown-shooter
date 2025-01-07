@@ -3625,7 +3625,6 @@ MonoBehaviour:
   cpuButton: {fileID: 558567244}
   vsCpuButton: {fileID: 794022711}
   quitButton: {fileID: 0}
-  mainMenu: {fileID: 0}
 --- !u!114 &868245047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6061,6 +6060,7 @@ MonoBehaviour:
   spawnDistance: 10
   spawnCooldown: 2
   maxEnemiesCount: 500
+  mainCamera: {fileID: 519420031}
   removeDistance: 15
   removeCheckInterval: 10
 --- !u!1 &1615577296
@@ -6829,6 +6829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f162476edf0ef48b79442b01cde22d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: {fileID: 838543721}
   killCount: 0
 --- !u!1 &1925726064
 GameObject:

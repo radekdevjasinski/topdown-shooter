@@ -54,35 +54,27 @@ public class PlayerMLAgent : Agent
     }
     public override void OnEpisodeBegin()
     {
+        //wykonaj funkcję skryptu GameController, resetującą stan gry
         game.ResetGame();
+        
+        //zresetuj wartość funkcji nagrody
+        SetReward(0);
+        
         distanceCovered = 0;
         iter++;
         ConsoleText(panelMLAgent, "iteration", iter.ToString());
-        SetReward(0);
 
     }
+    //zbieranie obserwacji
     public override void CollectObservations(VectorSensor sensor)
     {
-        ConsoleText(panelMLAgent, "reward", GetCumulativeReward().ToString("F2"));
-        
-        // pozycja gracza vector2
+        //wykonaj obserwację: pozycja gracza
         Vector2 playerPos = player.transform.position;
         sensor.AddObservation(playerPos);
+        
+        //wyświetl obserwację i funkcję nagrody
         ConsoleText(panelObserwations, "pos", playerPos.x.ToString("F2") + ", " + playerPos.y.ToString("F2"));
-
-        //// czy przeciwnicy w poblizu 0/1
-        //sensor.AddObservation(RayDetectedEnemy(raySensorEnemies));
-        //ConsoleText(panelObserwations, "enemies-close", RayDetectedEnemy(raySensorEnemies).ToString());
-
-
-        ////skierowany w 0 -> lewo, 1 -> prawo
-        //sensor.AddObservation(PlayerSide());
-        //ConsoleText(panelObserwations, "player-side", PlayerSide().ToString());
-
-        // ilosc zycia
-        //sensor.AddObservation(player.Hp);
-        //ConsoleText(panelObserwations, "health", player.Hp.ToString("F2"));
-
+        ConsoleText(panelMLAgent, "reward", GetCumulativeReward().ToString("F2"));
     }
     public override void Heuristic(in ActionBuffers actionsOut)
     {
@@ -104,25 +96,31 @@ public class PlayerMLAgent : Agent
         else
             discreteActions[1] = 2; // +1 ruch
     }
-// Kiedy następuje moment wykonania akcji
+//wykonywanie akcji
     public override void OnActionReceived(ActionBuffers actions)
     {
-        // Dwie akcje które wykonuje agent, ruch w poziomie i pionie
-
+        //pobranie akcji
         int moveX = actions.DiscreteActions[0];  // 0 -> -1, 1 -> 0, 2 -> +1
         int moveY = actions.DiscreteActions[1];  // 0 -> -1, 1 -> 0, 2 -> +1
 
+        //mapowanie akcji
         float mappedMoveX = moveX == 0 ? -1f : (moveX == 1 ? 0f : 1f);
         float mappedMoveY = moveY == 0 ? -1f : (moveY == 1 ? 0f : 1f);
 
-        // Znormalizowany wektor, czyli wartość 0.7, gdy porusza się na skos
+        //normalizacja wektora, czyli wartość 0.7, gdy porusza się na skos
         movement = new Vector2(mappedMoveX, mappedMoveY).normalized;
+        
+        //wartość vektor2 movement jest wykorzystywana do poruszania się
+        //w funkcji FixedUpdate()
+        
         ConsoleText(panelActions, "move", movement.x.ToString("F2") + ", " + movement.y.ToString("F2"));
 
-        // Oblicz przemieszczenie od ostatniej pozycji
+
         Vector2 currentPosition = player.transform.position;
         distanceCovered += Vector2.Distance(lastPosition, currentPosition);
         lastPosition = currentPosition;
+        
+        //wyświetlanie akcji na ekranie
         ConsoleText(panelMLAgent, "distance", distanceCovered.ToString("F2"));
         if(killCounter != null)
         {

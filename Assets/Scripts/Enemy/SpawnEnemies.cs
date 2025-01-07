@@ -6,21 +6,20 @@ using UnityEngine;
 public class SpawnEnemies : MonoBehaviour
 {
     [SerializeField]
-    private Player player;
+    public Player player;
     [SerializeField]
-    private GameController game;
+    public GameController game;
     [SerializeField]
-    private GameObject[] enemyPrefab;
     private List<GameObject> enemies;
 
     [SerializeField]
-    private float spawnDistance = 10f;
+    public float spawnDistance = 10f;
     [SerializeField]
     private float spawnCooldown = 5f;
     [SerializeField]
     private float maxEnemiesCount = 20;
 
-    [SerializeField] private Camera mainCamera;
+    [SerializeField] public Camera mainCamera;
 
     [SerializeField]
     private float removeDistance = 20f;
@@ -29,7 +28,8 @@ public class SpawnEnemies : MonoBehaviour
 
     void Start()
     {
-        enemies = new List<GameObject>(enemyPrefab);
+        GameObject[] enemyPrefabArray = Resources.LoadAll<GameObject>("Prefabs/Enemies");
+        enemies = new List<GameObject>(enemyPrefabArray);
         enemies.Sort((a, b) =>
         {
             float threatA = a.GetComponent<Enemy>().threatCost;
@@ -42,36 +42,42 @@ public class SpawnEnemies : MonoBehaviour
         StartCoroutine(RemoveDistantEnemiesPeriodically());
 
     }
-
-    void SpawnEnemyOnCircle()
+    // generuj przeciwnika na okręgu
+    public void SpawnEnemyOnCircle()
     {
+        //oblicz liczbę wygenerowanych już przeciwników
         List<GameObject> children = new List<GameObject>();
-
         foreach (Transform child in this.transform)
         {
             children.Add(child.gameObject);
         }
+
+        //jeżeli maksymalna ilość przeciwników w świecie nie jest przekroczona,
+        //przystąp do generowania
         if (children.Count < maxEnemiesCount)
         {
-            // Uzyskaj �rodek kamery
+            // uzyskaj środek kamery, tym samym pozycję gracza
             Vector3 cameraPosition = mainCamera.transform.position;
 
-            // Wybierz losowy k�t w radianach
+            // wybierz losowy kąt w radianach
             float angle = Random.Range(0f, 2f * Mathf.PI);
 
-            // Oblicz pozycj� na okr�gu
+            // oblicz pozycję na okręgu
             Vector3 spawnPosition = new Vector3(
                 cameraPosition.x + Mathf.Cos(angle) * spawnDistance,
                 cameraPosition.y + Mathf.Sin(angle) * spawnDistance,
                 0);
 
-            // Stw�rz przeciwnika na wybranej pozycji
+            // Stwórz przeciwnika na wybranej pozycji, z wybranym typem
             SpawnEnemy(spawnPosition, ChooseEnemy());
         }
     }
-    GameObject ChooseEnemy()
+    //wybierz typ przeciwnika
+    public GameObject ChooseEnemy()
     {
         List<GameObject> eligibleEnemies = new List<GameObject>();
+        
+        //znajdź najtrudniejszych przeciwników którzy mogą się wygenerować
         float highestThreatCost = 0;
         foreach (GameObject enemy in enemies)
         {
@@ -85,21 +91,26 @@ public class SpawnEnemies : MonoBehaviour
             }
         }
 
+        //jeżeli tylko jeden typ przeciwnika jest możliwy, 
+        //zwróć go
         if (eligibleEnemies.Count == 1)
         {
             return eligibleEnemies[0];
         }
 
+        //jeżeli kilka typów przeciwników może się pojawić, 
+        //zwróć losowego z nich
         else if (eligibleEnemies.Count > 1)
         {
             int randomIndex = Random.Range(0, eligibleEnemies.Count);
             return eligibleEnemies[randomIndex];
         }
 
+        //jeżeli żaden nie może się wygenerować, zwróć wartość null
         return null;
     }
 
-    void SpawnEnemy(Vector3 spawnPosition, GameObject enemyPrefab)
+    public void SpawnEnemy(Vector3 spawnPosition, GameObject enemyPrefab)
     {
         if (enemyPrefab != null)
         {
@@ -169,7 +180,7 @@ public class SpawnEnemies : MonoBehaviour
         }
     }
 
-    void RemoveDistantEnemies()
+    public void RemoveDistantEnemies()
     {
         List<GameObject> children = new List<GameObject>();
 

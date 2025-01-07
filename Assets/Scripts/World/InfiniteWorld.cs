@@ -1,26 +1,24 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Tilemaps;
+using System.Collections;
 
 public class InfiniteWorld : MonoBehaviour
 {
-    [SerializeField] private Player player;
-    private GameObject chunkPrefab; //Prefab sektora
-    private int gridSizeX; //rozmiary sektora
-    private int gridSizeY; 
+    [SerializeField] public Player player;
+    public GameObject chunkPrefab; //Prefab sektora
+    public static int gridSizeX = 99; //rozmiary sektora
+    public static int gridSizeY = 96; 
 
     private Vector3 lastPlayerPosition;
     public Dictionary<Vector2Int, GameObject> activeChunks = new Dictionary<Vector2Int, GameObject>();
 
-    void Start()
+    public void Start()
     {
+        activeChunks = new();
         lastPlayerPosition = player.gameObject.transform.position;
-        chunkPrefab = gameObject.transform.GetChild(0).gameObject;
-        gridSizeX = Mathf.CeilToInt(chunkPrefab.GetComponent<TilemapRenderer>().bounds.size.x);
-        gridSizeY = Mathf.CeilToInt(chunkPrefab.GetComponent<TilemapRenderer>().bounds.size.y);
         UpdateWorld();
     }
-
     void Update()
     {
         Vector3 playerPosition = player.gameObject.transform.position;
@@ -32,15 +30,15 @@ public class InfiniteWorld : MonoBehaviour
             lastPlayerPosition = playerPosition;
         }
     }
-    // Co jakiś czas, gdy zmieni się pozycja gracza, wygeneruj nowe sektory wokół gracza i usuń stare
-    void UpdateWorld()
+    // co jakiś czas, gdy zmieni się pozycja gracza, wygeneruj nowe sektory wokół gracza i usuń stare
+    public void UpdateWorld()
     {
-        // Sprawdź na którym sektorze jest gracz
+        // sprawdź na którym sektorze jest gracz
         Vector2Int playerGridPosition = 
             new Vector2Int(Mathf.RoundToInt(player.gameObject.transform.position.x / gridSizeX), 
             Mathf.RoundToInt(player.gameObject.transform.position.y / gridSizeY));
 
-        // Sprawdź sąsiednie sektory w promieniu 1 jednostki gridu
+        // sprawdź sąsiednie sektory
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
@@ -48,7 +46,7 @@ public class InfiniteWorld : MonoBehaviour
                 Vector2Int gridPos = new Vector2Int(playerGridPosition.x + x, playerGridPosition.y + y);
                 float distance = Vector2.Distance(player.gameObject.transform.position, new Vector2(gridPos.x * gridSizeX, gridPos.y * gridSizeY));
 
-                // Generuj sektor, jeśli nie istnieje
+                // generuj sektor, jeśli nie istnieje
                 if (!activeChunks.ContainsKey(gridPos))
                 {
                     GameObject newChunk = CreateGridChunk(gridPos);

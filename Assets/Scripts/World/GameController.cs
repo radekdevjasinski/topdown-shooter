@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
 {
     [Header("Threat")]
     [SerializeField] private float threatValue;
-    [SerializeField] private float threatSpeed;
+    [SerializeField] public float threatSpeed;
     
     [Header("Level")]
     [SerializeField] private int level;
@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour
         get => expToNextLevel;
         set => expToNextLevel = value;
     }
-    private void Start()
+    public void Start()
     {
         level = 1;
         experience = 0;
@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
         uIController = GetComponent<UIController>();
         Time.timeScale = 1;
     }
-    void Update()
+    public void Update()
     {
         // wartość zagrożenia stale rośnie
         threatValue += Time.deltaTime * threatSpeed;

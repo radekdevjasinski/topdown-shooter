@@ -3307,6 +3307,7 @@ MonoBehaviour:
   spawnDistance: 10
   spawnCooldown: 2
   maxEnemiesCount: 500
+  mainCamera: {fileID: 519420031}
   removeDistance: 15
   removeCheckInterval: 10
 --- !u!1 &1670287975

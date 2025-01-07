@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5015737838979021327}
   - component: {fileID: 1615531490804683387}
   m_Layer: 0
-  m_Name: Sand
+  m_Name: Chunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
