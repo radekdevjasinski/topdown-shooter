@@ -1203,10 +1203,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 76dd41b54e110734db0fe5ade1037e4d, type: 2}
   - {fileID: 11400000, guid: cd15d4b8586a5f848b1541b0f05dbb7e, type: 2}
   playerRef: {fileID: 664760488}
-  GunCooldown: 5
+  GunCooldown: 10
   DetectionRadius: 5
   BulletSpeed: 500
-  GunDamage: 100
+  GunDamage: 10
 --- !u!1 &460834359
 GameObject:
   m_ObjectHideFlags: 0

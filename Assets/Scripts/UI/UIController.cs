@@ -15,7 +15,10 @@ public class UIController : MonoBehaviour
     {
         defaultTimeScale = Time.timeScale;
         levelUpPanel?.SetActive(false);
-        pausePanel?.SetActive(false);
+        if(pausePanel!=null)
+        {
+            pausePanel.SetActive(false);
+        }
     }
     public void ShowLevelUp()
     {
@@ -33,7 +36,7 @@ public class UIController : MonoBehaviour
     }
     public void OnPause()
     {
-        if(levelUpPanelOn)
+        if(levelUpPanelOn || pausePanel == null)
         {
             return;
         }

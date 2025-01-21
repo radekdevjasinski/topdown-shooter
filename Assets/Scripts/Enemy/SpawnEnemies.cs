@@ -15,9 +15,8 @@ public class SpawnEnemies : MonoBehaviour
     [SerializeField]
     public float spawnDistance = 10f;
     [SerializeField]
-    private float spawnCooldown = 5f;
-    [SerializeField]
-    private float maxEnemiesCount = 20;
+    private float spawnCooldown = 2f;
+    private float maxEnemiesCount = 200;
 
     [SerializeField] public Camera mainCamera;
 
@@ -25,7 +24,12 @@ public class SpawnEnemies : MonoBehaviour
     private float removeDistance = 20f;
     [SerializeField]
     private float removeCheckInterval = 5f;
+    private static float cooldownDecreaseInterval = 15f; // Czas, po którym zmniejszy się spawnCooldown
 
+    public void Reset()
+    {
+        spawnCooldown = 2f;
+    }
     void Start()
     {
         GameObject[] enemyPrefabArray = Resources.LoadAll<GameObject>("Prefabs/Enemies");
@@ -40,6 +44,8 @@ public class SpawnEnemies : MonoBehaviour
         
         StartCoroutine(SpawnEnemiesPeriodically());
         StartCoroutine(RemoveDistantEnemiesPeriodically());
+        StartCoroutine(DecreaseSpawnCooldownPeriodically());
+
 
     }
     // generuj przeciwnika na okręgu
@@ -196,6 +202,17 @@ public class SpawnEnemies : MonoBehaviour
             {
                 Destroy(enemy);
             }
+        }
+    }
+    // Coroutine do zmniejszania spawnCooldown
+    IEnumerator DecreaseSpawnCooldownPeriodically()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(cooldownDecreaseInterval);
+
+            // Zmniejszamy spawnCooldown o 0.1, ale nie poniżej 0.5f
+            spawnCooldown = Mathf.Max(spawnCooldown - 0.1f, 0.5f);
         }
     }
 }

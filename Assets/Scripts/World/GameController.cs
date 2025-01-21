@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
 
 
     private float threatSpikeTimer = 0;
-    private static float spikeChangeTime = 30;
+    private static float spikeChangeTime = 7;
     private UIController uIController;
 
     public float Threat
@@ -114,6 +114,7 @@ public class GameController : MonoBehaviour
     {
         player.ResetPlayer();
         enemySpawner.ClearAllEnemies();
+        enemySpawner.Reset();
         arsenalController.ResetArsenal();
         if(killCounter != null)
         {
@@ -122,7 +123,7 @@ public class GameController : MonoBehaviour
         threatValue = 0;
         threatSpeed = 0.3f;
         threatSpikeTimer = 0;
-        spikeChangeTime = 30;
+        spikeChangeTime = 7;
         level = 1;
         experience = 0;
         expToNextLevel = LevelingFunction();

@@ -1685,8 +1685,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1176325740}
+  m_Children: []
   m_Father: {fileID: 1524476732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &930171308
@@ -1702,6 +1701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 544991853}
+  chunkPrefab: {fileID: 472015288116570273, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
 --- !u!156049354 &930171309
 Grid:
   m_ObjectHideFlags: 0
@@ -1923,10 +1923,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 76dd41b54e110734db0fe5ade1037e4d, type: 2}
   - {fileID: 11400000, guid: cd15d4b8586a5f848b1541b0f05dbb7e, type: 2}
   playerRef: {fileID: 544991853}
-  GunCooldown: 5
+  GunCooldown: 10
   DetectionRadius: 5
   BulletSpeed: 500
-  GunDamage: 100
+  GunDamage: 10
 --- !u!1 &1041010605
 GameObject:
   m_ObjectHideFlags: 0
@@ -2303,72 +2303,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1170148257}
   m_CullTransparentMesh: 1
---- !u!1001 &1176325739
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 930171307}
-    m_Modifications:
-    - target: {fileID: 472015288116570273, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_Name
-      value: Sand
-      objectReference: {fileID: 0}
-    - target: {fileID: 472015288116570273, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
---- !u!4 &1176325740 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3984122352124120780, guid: e8f894febcbd11f4881eccd65bdbdf51, type: 3}
-  m_PrefabInstance: {fileID: 1176325739}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1184429097
 GameObject:
   m_ObjectHideFlags: 0
@@ -3298,12 +3232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 544991853}
   game: {fileID: 236433834}
-  enemyPrefab:
-  - {fileID: 7280718620659616017, guid: 3f4a10be3d2aeb247a2dc2977e8b1a14, type: 3}
-  - {fileID: 7280718620659616017, guid: 33322a5346c06c744aab09b7d45da09b, type: 3}
-  - {fileID: 7280718620659616017, guid: 90b208ffa170b6f469fdeef505482701, type: 3}
-  - {fileID: 7280718620659616017, guid: 85e22561f8e41bc4781cbdcf21226737, type: 3}
-  - {fileID: 7280718620659616017, guid: 60b2ecc159284324ba17b9fe7896bdc2, type: 3}
+  enemies: []
   spawnDistance: 10
   spawnCooldown: 2
   maxEnemiesCount: 500
