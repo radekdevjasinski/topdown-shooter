@@ -10,7 +10,8 @@ public class SpawnEnemies : MonoBehaviour
     [SerializeField]
     public GameController game;
     [SerializeField]
-    private List<GameObject> enemies;
+    private List<GameObject> enemyTypes;
+    public List<GameObject> enemies;
 
     [SerializeField]
     public float spawnDistance = 10f;
@@ -33,8 +34,8 @@ public class SpawnEnemies : MonoBehaviour
     void Start()
     {
         GameObject[] enemyPrefabArray = Resources.LoadAll<GameObject>("Prefabs/Enemies");
-        enemies = new List<GameObject>(enemyPrefabArray);
-        enemies.Sort((a, b) =>
+        enemyTypes = new List<GameObject>(enemyPrefabArray);
+        enemyTypes.Sort((a, b) =>
         {
             float threatA = a.GetComponent<Enemy>().threatCost;
             float threatB = b.GetComponent<Enemy>().threatCost;
@@ -42,33 +43,28 @@ public class SpawnEnemies : MonoBehaviour
             return threatB.CompareTo(threatA);
         });
         
+        enemies = new();
+
         StartCoroutine(SpawnEnemiesPeriodically());
         StartCoroutine(RemoveDistantEnemiesPeriodically());
         StartCoroutine(DecreaseSpawnCooldownPeriodically());
 
 
     }
-    // generuj przeciwnika na okręgu
+    // Generuj przeciwnika na okręgu
     public void SpawnEnemyOnCircle()
     {
-        //oblicz liczbę wygenerowanych już przeciwników
-        List<GameObject> children = new List<GameObject>();
-        foreach (Transform child in this.transform)
-        {
-            children.Add(child.gameObject);
-        }
-
-        //jeżeli maksymalna ilość przeciwników w świecie nie jest przekroczona,
+        //Jeżeli maksymalna ilość przeciwników w świecie nie jest przekroczona,
         //przystąp do generowania
-        if (children.Count < maxEnemiesCount)
+        if (enemies.Count < maxEnemiesCount)
         {
-            // uzyskaj środek kamery, tym samym pozycję gracza
+            // Uzyskaj środek kamery, tym samym pozycję gracza
             Vector3 cameraPosition = mainCamera.transform.position;
 
-            // wybierz losowy kąt w radianach
+            // Wybierz losowy kąt w radianach
             float angle = Random.Range(0f, 2f * Mathf.PI);
 
-            // oblicz pozycję na okręgu
+            // Oblicz pozycję na okręgu
             Vector3 spawnPosition = new Vector3(
                 cameraPosition.x + Mathf.Cos(angle) * spawnDistance,
                 cameraPosition.y + Mathf.Sin(angle) * spawnDistance,
@@ -85,7 +81,7 @@ public class SpawnEnemies : MonoBehaviour
         
         //znajdź najtrudniejszych przeciwników którzy mogą się wygenerować
         float highestThreatCost = 0;
-        foreach (GameObject enemy in enemies)
+        foreach (GameObject enemy in enemyTypes)
         {
             if (game.ThreatCheck(enemy.GetComponent<Enemy>().threatCost))
             {
@@ -125,6 +121,8 @@ public class SpawnEnemies : MonoBehaviour
             enemyClass.playerRef = player.gameObject;
             enemyClass.gameRef = game;
             game.Threat -= enemyPrefab.GetComponent<Enemy>().threatCost;
+
+            enemies.Add(enemy);
         }
     }
     IEnumerator SpawnEnemiesPeriodically()
@@ -137,17 +135,12 @@ public class SpawnEnemies : MonoBehaviour
     }
     public List<GameObject> GetClosestEnemies(int count)
     {
-        List<GameObject> enemies = new List<GameObject>();
-        List<GameObject> children = new List<GameObject>();
+        List<GameObject> sortedEnemies = enemies;
+        List<GameObject> closestEnemies = new();
 
-        // Dodajemy wszystkich przeciwnik�w do listy
-        foreach (Transform child in this.transform)
-        {
-            children.Add(child.gameObject);
-        }
 
         // Sortujemy przeciwnik�w wed�ug odleg�o�ci od gracza
-        children.Sort((enemy1, enemy2) =>
+        sortedEnemies.Sort((enemy1, enemy2) =>
         {
             float distance1 = Vector3.Distance(player.gameObject.transform.position, enemy1.transform.position);
             float distance2 = Vector3.Distance(player.gameObject.transform.position, enemy2.transform.position);
@@ -155,27 +148,22 @@ public class SpawnEnemies : MonoBehaviour
         });
 
         // Dodajemy najbli�szych przeciwnik�w do listy
-        for (int i = 0; i < Mathf.Min(count, children.Count); i++)
+        for (int i = 0; i < Mathf.Min(count, sortedEnemies.Count); i++)
         {
-            enemies.Add(children[i]);
+            closestEnemies.Add(sortedEnemies[i]);
         }
 
-        return enemies;
+        return closestEnemies;
     }
 
     public void ClearAllEnemies()
     {
-        List<GameObject> children = new List<GameObject>();
-
-        foreach (Transform child in this.transform)
-        {
-            children.Add(child.gameObject);
-        }
-
-        foreach (GameObject enemy in children)
+        foreach (GameObject enemy in enemies)
         {
             Destroy(enemy);
         }
+
+        enemies = new();
     }
     IEnumerator RemoveDistantEnemiesPeriodically()
     {
@@ -188,19 +176,13 @@ public class SpawnEnemies : MonoBehaviour
 
     public void RemoveDistantEnemies()
     {
-        List<GameObject> children = new List<GameObject>();
-
-        foreach (Transform child in this.transform)
-        {
-            children.Add(child.gameObject);
-        }
-
-        foreach (GameObject enemy in children)
+        foreach (GameObject enemy in enemies)
         {
             float distance = Vector3.Distance(player.gameObject.transform.position, enemy.transform.position);
             if (distance > removeDistance)
             {
                 Destroy(enemy);
+                enemies.Remove(enemy);
             }
         }
     }

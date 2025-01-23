@@ -30,15 +30,15 @@ public class InfiniteWorld : MonoBehaviour
             lastPlayerPosition = playerPosition;
         }
     }
-    // co jakiś czas, gdy zmieni się pozycja gracza, wygeneruj nowe sektory wokół gracza i usuń stare
+    // Co jakiś czas, gdy zmieni się pozycja gracza, wygeneruj nowe sektory wokół gracza i usuń stare
     public void UpdateWorld()
     {
-        // sprawdź na którym sektorze jest gracz
+        // Sprawdź na którym sektorze jest gracz
         Vector2Int playerGridPosition = 
             new Vector2Int(Mathf.RoundToInt(player.gameObject.transform.position.x / gridSizeX), 
             Mathf.RoundToInt(player.gameObject.transform.position.y / gridSizeY));
 
-        // sprawdź sąsiednie sektory
+        // Sprawdź sąsiednie sektory
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
@@ -46,7 +46,7 @@ public class InfiniteWorld : MonoBehaviour
                 Vector2Int gridPos = new Vector2Int(playerGridPosition.x + x, playerGridPosition.y + y);
                 float distance = Vector2.Distance(player.gameObject.transform.position, new Vector2(gridPos.x * gridSizeX, gridPos.y * gridSizeY));
 
-                // generuj sektor, jeśli nie istnieje
+                // Generuj sektor, jeśli nie istnieje
                 if (!activeChunks.ContainsKey(gridPos))
                 {
                     GameObject newChunk = CreateGridChunk(gridPos);
@@ -56,7 +56,13 @@ public class InfiniteWorld : MonoBehaviour
             }
         }
 
-        // Usuń sektory, które są poza zasięgiem
+        //Usuń oddalone sektory, dla podanej pozycji gracza w siatce sektorów
+        DeleteOldChunks(playerGridPosition);
+    }
+    //Usuń oddalone sektory, dla podanej pozycji gracza w siatce sektorów
+    private void DeleteOldChunks(Vector2Int playerGridPosition)
+    {
+        // Utwórz listę sektorów, które są poza zasięgiem
         List<Vector2Int> chunksToRemove = new List<Vector2Int>();
         foreach (var chunk in activeChunks)
         {
@@ -69,14 +75,13 @@ public class InfiniteWorld : MonoBehaviour
             }
         }
 
-        // Usuń sektory z mapy
+        // Usuń sektory ze świata
         foreach (var chunkPos in chunksToRemove)
         {
             Destroy(activeChunks[chunkPos]);
             activeChunks.Remove(chunkPos);
         }
     }
-
     GameObject CreateGridChunk(Vector2Int gridPosition)
     {
         // Tworzenie nowego sektora
